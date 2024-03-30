@@ -14,7 +14,6 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     override suspend fun doRequest(request: Request): Response {
-       
         var response = Response()
         return try {
             response = when (request) {
