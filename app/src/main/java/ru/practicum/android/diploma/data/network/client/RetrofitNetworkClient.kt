@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.data.network.api.HeadHuntersApi
 import ru.practicum.android.diploma.data.network.api.Request
 import ru.practicum.android.diploma.data.network.api.Request.MainSearchRequest
 import ru.practicum.android.diploma.data.network.api.Response
+import ru.practicum.android.diploma.util.Constants.CODE_SUCCESS
 import ru.practicum.android.diploma.util.isConnected
 
 class RetrofitNetworkClient(
@@ -14,11 +15,9 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     override suspend fun doRequest(request: Request): Response {
-
         if (!isConnected(context)) {
             return Response().apply { resultCode = -1 }
         }
-
         var response = Response()
         return try {
             response = when (request) {
@@ -38,7 +37,7 @@ class RetrofitNetworkClient(
                     headHuntersApi.getVacancy(request.id)
                 }
             }
-            response.apply { resultCode = 200 }
+            response.apply { resultCode = CODE_SUCCESS }
         } catch (exception: HttpException) {
             response.apply { resultCode = exception.code() }
         }

@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.data.dto.customFields
+package ru.practicum.android.diploma.data.dto.fields
 
 data class LogoUrlDto(
     val original: String?,
