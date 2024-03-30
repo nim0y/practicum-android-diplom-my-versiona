@@ -14,11 +14,9 @@ interface HeadHuntersApi {
         "HH-User-Agent: Application Name (some@mail.xz)"
     )
 
-    @GET("/vacancies/{vacancy_id}")
-    suspend fun getVacancy(@Path("vacancy_id") id: String): Response
+    @GET("/vacancies/{vacancy_id}")suspend fun getVacancy(@Path("vacancy_id") id: String): Response
 
-    @GET("/vacancies/{vacancy_id}/similar_vacancies")
-    suspend fun getSimilarVacancies(@Path("vacancy_id") id: String): Response
+    @GET("/vacancies/{vacancy_id}/similar_vacancies")suspend fun getSimilarVacancies(@Path("vacancy_id") id: String): Response
 
     @GET("/vacancies")
     suspend fun getVacancies(
