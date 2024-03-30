@@ -7,7 +7,7 @@ sealed interface Request {
         val filters: HashMap<String, String>
     ) : Request
 
-    data class SimilarVacanciesRequest(val id:String):Request
+    data class SimilarVacanciesRequest(val id: String) : Request
 
-    data class CurrentVacancyDetails(val id:String):Request
+    data class CurrentVacancyDetails(val id: String) : Request
 }

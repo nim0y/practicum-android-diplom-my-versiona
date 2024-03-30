@@ -4,24 +4,24 @@ import android.content.Context
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.network.api.HeadHuntersApi
 import ru.practicum.android.diploma.data.network.api.Request
-import ru.practicum.android.diploma.data.network.api.Response
 import ru.practicum.android.diploma.data.network.api.Request.MainSearchRequest
+import ru.practicum.android.diploma.data.network.api.Response
 import ru.practicum.android.diploma.util.isConnected
 
 class RetrofitNetworkClient(
     private val context: Context,
     private val headHuntersApi: HeadHuntersApi
-): NetworkClient {
+) : NetworkClient {
 
     override suspend fun doRequest(request: Request): Response {
 
-        if (!isConnected(context)){
+        if (!isConnected(context)) {
             return Response().apply { resultCode = -1 }
         }
 
         var response = Response()
         return try {
-            response = when (request){
+            response = when (request) {
                 is MainSearchRequest -> {
                     headHuntersApi.getVacancies(
                         query = request.query,
@@ -30,16 +30,16 @@ class RetrofitNetworkClient(
                     )
                 }
 
-                is Request.SimilarVacanciesRequest ->{
+                is Request.SimilarVacanciesRequest -> {
                     headHuntersApi.getSimilarVacancies(request.id)
                 }
 
-                is Request.CurrentVacancyDetails ->{
+                is Request.CurrentVacancyDetails -> {
                     headHuntersApi.getVacancy(request.id)
                 }
             }
             response.apply { resultCode = 200 }
-        }catch (exception:HttpException){
+        } catch (exception: HttpException) {
             response.apply { resultCode = exception.code() }
         }
     }
