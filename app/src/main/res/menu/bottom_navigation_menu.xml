@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/main_screen"
+        android:title="@string/main_screen_title"
+        android:icon="@drawable/main"/>
+
+    <item
+        android:id="@+id/favorite_screen"
+        android:title="@string/favorite_screen_title"
+        android:icon="@drawable/favorites_on__24px"/>
+
+    <item
+        android:id="@+id/team_screen"
+        android:title="@string/team_screen_title"
+        android:icon="@drawable/team_24px"/>
+
+
+</menu>
