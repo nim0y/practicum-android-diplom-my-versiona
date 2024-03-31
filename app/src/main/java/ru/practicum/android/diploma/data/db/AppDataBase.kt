@@ -13,5 +13,5 @@ abstract class AppDataBase : RoomDatabase() {
     companion object {
         const val DB_NAME = "appDataBase.db"
     }
-    abstract fun favoriteVacancyDao() : FavoriteVacancyDao
+    abstract fun favoriteVacancyDao(): FavoriteVacancyDao
 }
