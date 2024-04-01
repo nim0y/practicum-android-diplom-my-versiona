@@ -13,7 +13,8 @@ class FavouritesFragment : Fragment() {
 
     private val viewModel: FavouritesViewModel by viewModels()
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.fragment_favourites, container, false)
