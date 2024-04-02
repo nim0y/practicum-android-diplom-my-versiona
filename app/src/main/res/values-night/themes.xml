@@ -24,6 +24,6 @@
         <item name="colorAccent">@color/red</item>
 
         <!--позволяет динамически изменять фон окна приложения в соответствии с выбранной темой-->
-        <item name="android:windowBackground">?attr/colorPrimary</item>
+        <item name="android:windowBackground">@color/black</item>
     </style>
 </resources>
