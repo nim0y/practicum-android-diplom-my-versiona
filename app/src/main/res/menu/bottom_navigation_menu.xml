@@ -9,7 +9,7 @@
     <item
         android:id="@+id/favorite_screen"
         android:title="@string/favorite_screen_title"
-        android:icon="@drawable/favorites_on__24px"/>
+        android:icon="@drawable/favorites_on_24px"/>
 
     <item
         android:id="@+id/team_screen"
