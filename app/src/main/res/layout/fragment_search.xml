@@ -98,7 +98,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_edit_frame"
-        tools:listitem="@layout/seach_item_view" />
+        tools:listitem="@layout/search_item_view" />
 
     <ImageView
         android:id="@+id/search_default_placeholder"
