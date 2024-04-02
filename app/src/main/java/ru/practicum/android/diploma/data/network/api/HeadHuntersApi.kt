@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.util.Constants.VACANCIES_PER_PAGE
 interface HeadHuntersApi {
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: Application Name (some@mail.xz)"
+        "HH-User-Agent: Application Name (riabikina5@gmail.com)"
     )
     @GET("/vacancies/{vacancy_id}")
     suspend fun getVacancy(@Path("vacancy_id") id: String): Response
