@@ -101,6 +101,7 @@
         tools:listitem="@layout/seach_item_view" />
 
     <ImageView
+        android:id="@+id/search_default_placeholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dimen_16dp"
