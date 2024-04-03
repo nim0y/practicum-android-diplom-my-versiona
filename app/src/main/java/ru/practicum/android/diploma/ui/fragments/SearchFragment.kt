@@ -20,14 +20,14 @@ import ru.practicum.android.diploma.ui.state.SearchScreenState
 import ru.practicum.android.diploma.util.adapter.Adapter
 
 class SearchFragment : Fragment() {
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: SearchViewModel by viewModels()
     private val adapter = Adapter(onClick = { actionOnClick(it.id) })
 
     private fun actionOnClick(id: String) {
         if (!viewModel.isClickable) return
         viewModel.actionOnClick()
-        // TODO: findnav -> filter 
     }
 
     override fun onCreateView(
@@ -35,7 +35,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -48,7 +48,7 @@ class SearchFragment : Fragment() {
 
         binding.searchRecycleView.adapter = adapter
 
-        binding.searchQuery.doOnTextChanged { query, start, before, count ->
+        binding.searchQuery.doOnTextChanged { query, _, _, _ ->
             if (query.isNullOrEmpty()) {
                 binding.searchIconLoupe.isVisible = true
                 binding.clearCrossIc.isVisible = false
@@ -64,14 +64,15 @@ class SearchFragment : Fragment() {
         }
 
         binding.searchQuery.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE || event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER) {
+            val isEnterKeyPressed = actionId == EditorInfo.IME_ACTION_DONE ||
+                (event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)
+            if (isEnterKeyPressed) {
                 hideKeyboard(v)
                 true
             } else {
                 false
             }
         }
-
 
         binding.searchQuery.requestFocus()
         binding.clearCrossIc.setOnClickListener {
@@ -106,7 +107,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showSearchResult(vacancies: List<VacancyModel>, found: Int) {
-
         with(binding) {
             searchRecycleView.isVisible = true
             centerProgressBar.isVisible = false

@@ -22,7 +22,9 @@ class ViewHolder(
                     append(item.area.name)
                 }
                 positionTitle.text = title
-            } else positionTitle.text = item.name
+            } else {
+                positionTitle.text = item.name
+            }
 
             companyTitle.text = item.employer?.name
             salaryTitle.text = convertSalary(item, context = salaryTitle.context)
