@@ -4,12 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.ui.state.SearchScreenState
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.debounce
 
-class SearchViewModel() : ViewModel() {
+class SearchViewModel : ViewModel() {
 
     var isClickable = true
     private val _searchState = MutableLiveData<SearchScreenState>()
@@ -43,10 +42,5 @@ class SearchViewModel() : ViewModel() {
     fun search(query: String?) {
         if (query.isNullOrBlank()) return
         setState(SearchScreenState.Loading)
-        viewModelScope.launch {
-            // TODO:
-        }
     }
 }
-
-

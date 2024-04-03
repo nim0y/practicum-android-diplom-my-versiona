@@ -10,11 +10,11 @@ import ru.practicum.android.diploma.domain.models.VacancyModel
 class Adapter(
     private val onClick: (VacancyModel) -> Unit,
     private val onLongClick: (VacancyModel) -> Unit = {}
-):RecyclerView.Adapter<ViewHolder>() {
+) : RecyclerView.Adapter<ViewHolder>() {
     val vacancies = ArrayList<VacancyModel>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return ViewHolder(SearchItemViewBinding.inflate(layoutInflater,parent,false),onClick,onLongClick)
+        return ViewHolder(SearchItemViewBinding.inflate(layoutInflater, parent, false), onClick, onLongClick)
     }
 
     override fun getItemCount(): Int {
@@ -25,11 +25,11 @@ class Adapter(
         holder.bind(vacancies[position])
     }
 
-    fun setVacancies(newList:List<VacancyModel>?){
-        val compare = DiffCallback(vacancies,newList ?: emptyList())
+    fun setVacancies(newList: List<VacancyModel>?) {
+        val compare = DiffCallback(vacancies, newList ?: emptyList())
         val diffResult = DiffUtil.calculateDiff(compare)
         vacancies.clear()
-        if (!newList.isNullOrEmpty()){
+        if (!newList.isNullOrEmpty()) {
             vacancies.addAll(newList)
         }
         diffResult.dispatchUpdatesTo(this)
