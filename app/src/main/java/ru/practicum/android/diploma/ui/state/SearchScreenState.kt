@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.State
+package ru.practicum.android.diploma.ui.state
 
 import ru.practicum.android.diploma.domain.models.VacancyModel
 

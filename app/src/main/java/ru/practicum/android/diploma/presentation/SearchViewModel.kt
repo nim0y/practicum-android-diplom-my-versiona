@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.ui.State.SearchScreenState
+import ru.practicum.android.diploma.ui.state.SearchScreenState
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.debounce
 
@@ -27,9 +27,6 @@ class SearchViewModel() : ViewModel() {
         }
 
     fun onSearchQueryChange(query: String?) {
-        if (query.isNullOrBlank() || query != lastQuery)
-        // TODO: vacanciesList 
-
         lastQuery = query
         searchDebounce(query)
     }
