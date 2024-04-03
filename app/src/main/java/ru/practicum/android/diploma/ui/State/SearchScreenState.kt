@@ -21,7 +21,6 @@ sealed interface SearchScreenState {
     ) : SearchScreenState
 
     data class Error(
-        val type: ErrorType
+        val errorId: Int
     ) : SearchScreenState
 }
-enum class ErrorType

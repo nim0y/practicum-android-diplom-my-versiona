@@ -1,11 +1,13 @@
 package ru.practicum.android.diploma.ui.fragments
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.practicum.android.diploma.R
@@ -13,11 +15,18 @@ import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.VacancyModel
 import ru.practicum.android.diploma.presentation.SearchViewModel
 import ru.practicum.android.diploma.ui.State.SearchScreenState
+import ru.practicum.android.diploma.util.adapter.Adapter
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
-    private var textWatcher: TextWatcher? = null
     private val viewModel: SearchViewModel by viewModels()
+    private val adapter = Adapter(onClick = {actionOnClick(it.id)})
+
+    private fun actionOnClick(id: String) {
+        if(!viewModel.isClickable) return
+        viewModel.actionOnClick()
+        // TODO: findnav -> filter 
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +35,46 @@ class SearchFragment : Fragment() {
     ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.searchState.observe(viewLifecycleOwner){
+            render(it)
+        }
+
+        binding.searchRecycleView.adapter = adapter
+
+        binding.searchQuery.doOnTextChanged { query, start, before, count ->
+            if(query.isNullOrEmpty()){
+                binding.searchIconLoupe.isVisible =true
+                binding.clearCrossIc.isVisible = false
+            }else{
+                binding.searchIconLoupe.isVisible =false
+                binding.clearCrossIc.isVisible = true
+            }
+
+            if(binding.searchQuery.hasFocus() && query.toString().isNotEmpty()){
+                showBlank()
+            }
+            viewModel.onSearchQueryChange(query.toString())
+        }
+        binding.searchQuery.requestFocus()
+        binding.clearCrossIc.setOnClickListener {
+            viewModel.onSearchQueryChange(null)
+            clearSearch()
+        }
+    }
+
+    private fun clearSearch() {
+        binding.searchQuery.setText("")
+        val view = requireActivity().currentFocus
+        if (view != null) {
+            val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+        showBlank()
     }
 
     private fun render(state: SearchScreenState){
@@ -39,6 +88,8 @@ class SearchFragment : Fragment() {
         }
     }
     private fun showSearchResult(vacancies:List<VacancyModel>,found:Int){
+        adapter.setVacancies(viewModel.vacanciesList)
+
         with(binding){
             searchRecycleView.isVisible = true
             centerProgressBar.isVisible =false
