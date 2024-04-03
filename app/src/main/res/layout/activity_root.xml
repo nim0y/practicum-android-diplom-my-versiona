@@ -29,5 +29,4 @@
         style="@style/BottomNavigationColored"
         app:menu="@menu/bottom_navigation_menu"/>
 
-
 </LinearLayout>

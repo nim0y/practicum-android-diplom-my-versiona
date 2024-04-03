@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="font_size_22">22sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_32">32sp</dimen>
+    <dimen name="toolbar_height_64dp">64dp</dimen>
+    <dimen name="icon_height_48dp">48dp</dimen>
+    <dimen name="icon_width_48dp">48dp</dimen>
+    <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="dimen_72dp">72dp</dimen>
+    <dimen name="dimen_56dp">56dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="dimen_4dp">4dp</dimen>
+    <dimen name="dimen_16dp">16dp</dimen>
+    <dimen name="dimen_12dp">12dp</dimen>
+    <dimen name="dimen_20dp">20dp</dimen>
+</resources>

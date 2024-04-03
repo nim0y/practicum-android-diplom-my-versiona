@@ -9,4 +9,11 @@
     <string name="name3">Михаил Хенкин</string>
     <string name="name4">Фёдор Жамойда</string>
     <string name="search">Поиск</string>
+    <string name="vacancy_search_title">Поиск вакансий</string>
+    <string name="no_connection">Нет интернета</string>
+    <string name="no_vacancy_list">Не удалось получить\n список вакансий</string>
+    <string name="search_hint">Введите запрос</string>
+    <string name="no_salary_info">Зарплата не указана</string>
+    <string name="from">от</string>
+    <string name="to">до</string>
 </resources>
