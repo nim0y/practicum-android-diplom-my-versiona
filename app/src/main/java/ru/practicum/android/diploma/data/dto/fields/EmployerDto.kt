@@ -13,7 +13,14 @@ data class EmployerDto(
     val url: String?,
     @SerializedName("vacancies_url")
     val vacanciesUrl: String?
-){
+) {
 
-    fun mapToModel() = EmployerModel(id, LogoUrlModel(logoUrls?.original, logoUrls?.logo90, logoUrls?.logo240), name, trusted, url, vacanciesUrl)
+    fun mapToModel() = EmployerModel(
+        id,
+        LogoUrlModel(logoUrls?.original, logoUrls?.logo90, logoUrls?.logo240),
+        name,
+        trusted,
+        url,
+        vacanciesUrl
+    )
 }

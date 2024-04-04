@@ -7,7 +7,6 @@ data class SalaryDto(
     val from: Int?,
     val gross: Boolean?,
     val to: Int?
-)
-{
-    fun mapToModel() = SalaryModel(currency,from,gross,to)
+) {
+    fun mapToModel() = SalaryModel(currency, from, gross, to)
 }
