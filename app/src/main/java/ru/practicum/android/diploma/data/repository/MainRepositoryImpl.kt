@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.data.repository
 
 import ru.practicum.android.diploma.data.dto.SearchResponseDto
 import ru.practicum.android.diploma.data.dto.VacancyDto
+import ru.practicum.android.diploma.data.mapper.mapToModel
 import ru.practicum.android.diploma.data.network.api.Request
 import ru.practicum.android.diploma.data.network.client.NetworkClient
 import ru.practicum.android.diploma.domain.Response

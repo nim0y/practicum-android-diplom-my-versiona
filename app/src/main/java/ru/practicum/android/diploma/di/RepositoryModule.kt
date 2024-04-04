@@ -6,5 +6,5 @@ import ru.practicum.android.diploma.data.repository.MainRepositoryImpl
 import ru.practicum.android.diploma.domain.api.MainRepository
 
 val repositoryModule = module {
-    factory { MainRepositoryImpl(get()) } bind MainRepository:: class
+    factory { MainRepositoryImpl(get()) } bind MainRepository::class
 }
