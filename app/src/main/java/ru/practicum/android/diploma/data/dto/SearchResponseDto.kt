@@ -11,5 +11,7 @@ data class SearchResponseDto(
     @SerializedName("per_page")
     val perPage: Int,
 ) : Response() {
-    fun mapToModel() = SearchResponseModel(items.map { it.mapToModel() }, page, pages, perPage)
+    fun mapToModel(): SearchResponseModel {
+        return SearchResponseModel(items.map { it.mapToModel() }, page, pages, perPage)
+    }
 }

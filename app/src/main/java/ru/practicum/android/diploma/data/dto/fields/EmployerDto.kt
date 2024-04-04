@@ -15,12 +15,14 @@ data class EmployerDto(
     val vacanciesUrl: String?
 ) {
 
-    fun mapToModel() = EmployerModel(
-        id,
-        LogoUrlModel(logoUrls?.original, logoUrls?.logo90, logoUrls?.logo240),
-        name,
-        trusted,
-        url,
-        vacanciesUrl
-    )
+    fun mapToModel(): EmployerModel {
+        return EmployerModel(
+            id,
+            LogoUrlModel(logoUrls?.original, logoUrls?.logo90, logoUrls?.logo240),
+            name,
+            trusted,
+            url,
+            vacanciesUrl
+        )
+    }
 }

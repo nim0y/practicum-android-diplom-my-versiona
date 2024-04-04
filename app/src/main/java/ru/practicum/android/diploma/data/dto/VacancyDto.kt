@@ -13,5 +13,7 @@ data class VacancyDto(
     val name: String?,
     val salary: SalaryDto?
 ) : Response() {
-    fun mapToModel() = VacancyModel(id, area.mapToModel(), employer?.mapToModel(), name, salary?.mapToModel())
+    fun mapToModel(): VacancyModel {
+        return VacancyModel(id, area.mapToModel(), employer?.mapToModel(), name, salary?.mapToModel())
+    }
 }
