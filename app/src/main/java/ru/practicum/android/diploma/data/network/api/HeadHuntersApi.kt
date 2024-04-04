@@ -6,6 +6,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
+import ru.practicum.android.diploma.data.dto.SearchResponseDto
 import ru.practicum.android.diploma.util.Constants.VACANCIES_PER_PAGE
 
 interface HeadHuntersApi {
@@ -25,5 +26,5 @@ interface HeadHuntersApi {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int = VACANCIES_PER_PAGE,
         @QueryMap filters: HashMap<String, String>
-    ): Response
+    ): SearchResponseDto
 }

@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ru.practicum.android.diploma.domain.api.MainRepository
 import ru.practicum.android.diploma.ui.state.SearchScreenState
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.debounce
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
     var isClickable = true
     private val _searchState = MutableLiveData<SearchScreenState>()
