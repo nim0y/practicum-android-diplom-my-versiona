@@ -7,6 +7,7 @@ import retrofit2.http.Query
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.SearchResponseDto
+import ru.practicum.android.diploma.data.dto.VacancyDto
 import ru.practicum.android.diploma.util.Constants.VACANCIES_PER_PAGE
 
 interface HeadHuntersApi {
@@ -15,10 +16,10 @@ interface HeadHuntersApi {
         "HH-User-Agent: Application Name (riabikina5@gmail.com)"
     )
     @GET("/vacancies/{vacancy_id}")
-    suspend fun getVacancy(@Path("vacancy_id") id: String): Response
+    suspend fun getVacancy(@Path("vacancy_id") id: String): VacancyDto
 
     @GET("/vacancies/{vacancy_id}/similar_vacancies")
-    suspend fun getSimilarVacancies(@Path("vacancy_id") id: String): Response
+    suspend fun getSimilarVacancies(@Path("vacancy_id") id: String): SearchResponseDto
 
     @GET("/vacancies")
     suspend fun getVacancies(
