@@ -1,9 +1,9 @@
 package ru.practicum.android.diploma.domain
 
-sealed class Response {
+sealed class Response<T: Any> {
 
-    class Success : Response()
+    class Success<T: Any>(val data: T) : Response<T>()
 
-    class Error : Response()
+    class Error : Response<Nothing>()
 
 }
