@@ -19,7 +19,7 @@ object ConvertCurrency {
         }
     }
 
-    const val cycleSize =3
+    const val cycleSize = 3
 
     fun toSalaryString(salary: Int): String {
         val salarySize = salary.toString().count() - 1
