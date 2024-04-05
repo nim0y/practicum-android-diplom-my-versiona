@@ -4,17 +4,13 @@ object ConvertCurrency {
 
     fun formatValueSalary(salaryFrom: Int?, salaryTo: Int?): String {
         return when {
-            (salaryFrom != null && (salaryTo == null || salaryTo == 0)) -> "от ${toSalaryString(salaryFrom)}"
-            ((salaryFrom == 0 || salaryFrom == null) && (salaryTo != null && salaryTo != 0)) -> "до ${
-                toSalaryString(
-                    salaryTo
-                )
+            salaryFrom != null && (salaryTo == null || salaryTo == 0) -> "от ${toSalaryString(salaryFrom)}"
+            (salaryFrom == 0 || salaryFrom == null) && salaryTo != null && salaryTo != 0 -> "до ${
+                toSalaryString(salaryTo)
             }"
 
-            ((salaryFrom != null && salaryFrom != 0) && (salaryTo != null && salaryTo != 0)) -> "от ${
-                toSalaryString(
-                    salaryFrom
-                )
+            salaryFrom != null && salaryFrom != 0 && salaryTo != null && salaryTo != 0 -> "от ${
+                toSalaryString(salaryFrom)
             } до ${toSalaryString(salaryTo)}"
 
             else -> {
@@ -23,13 +19,15 @@ object ConvertCurrency {
         }
     }
 
+    const val cycleSize =3
+
     fun toSalaryString(salary: Int): String {
         val salarySize = salary.toString().count() - 1
         var result = ""
         var cycle = 0
         for (i in salarySize downTo 0) {
             cycle = cycle + 1
-            if (cycle == 3) {
+            if (cycle == cycleSize) {
                 cycle = 0
                 result = " " + salary.toString()[i] + result
             } else {
