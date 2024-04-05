@@ -20,8 +20,8 @@
         <item name="colorSurface">@color/light_blue</item>
         <item name="colorOnSurface">@color/white</item>
 
-        <!-- кнопки сброса и избранного -->
-        <item name="colorAccent">@color/red</item>
+        <!-- указатель текста в виде капли -->
+        <item name="colorAccent">@color/light_blue</item>
 
         <!--позволяет динамически изменять фон окна приложения в соответствии с выбранной темой-->
         <item name="android:windowBackground">@color/white</item>

@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.VacancyModel
 import ru.practicum.android.diploma.presentation.SearchViewModel
 import ru.practicum.android.diploma.ui.state.SearchScreenState
+import ru.practicum.android.diploma.util.ErrorVariant
 import ru.practicum.android.diploma.util.adapter.Adapter
 
 class SearchFragment : Fragment() {
@@ -24,11 +25,6 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
     private val adapter = Adapter(onClick = { actionOnClick(it.id) })
-
-    private fun actionOnClick(id: String) {
-        if (!viewModel.isClickable) return
-        viewModel.actionOnClick()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,13 +96,14 @@ class SearchFragment : Fragment() {
             is SearchScreenState.Default -> showBlank()
             is SearchScreenState.Loading -> showProgress()
             is SearchScreenState.Success -> showSearchResult(state.vacancies, state.found)
-            is SearchScreenState.NothingFound -> showNoVacancyError()
-            is SearchScreenState.Error -> showNoConnectionError()
+            is SearchScreenState.NothingFound -> showSearchResult(state.vacancies, state.found)
+            is SearchScreenState.Error -> showNoConnectionError(state.errorVariant)
             is SearchScreenState.LoadNextPage -> showBlank()
         }
     }
 
     private fun showSearchResult(vacancies: List<VacancyModel>, found: Int) {
+        adapter.setVacancies(vacancies)
         with(binding) {
             searchRecycleView.isVisible = true
             centerProgressBar.isVisible = false
@@ -117,12 +114,10 @@ class SearchFragment : Fragment() {
             noConnectionPlaceholder.isVisible = false
         }
         if (vacancies.isEmpty()) {
-            binding.textUnderSearch.isVisible = true
-            binding.textUnderSearch.text = resources.getString(R.string.no_vacancy_list)
-            binding.noVacancyToShow.isVisible = true
+            showNoVacancyError()
         } else {
             binding.textUnderSearch.isVisible = true
-            binding.textUnderSearch.text = resources.getQuantityString(R.plurals.vacancy_count, found)
+            binding.textUnderSearch.text = resources.getQuantityString(R.plurals.vacancy_count, found, found)
             binding.noVacancyToShow.isVisible = false
             binding.searchRecycleView.isVisible = true
         }
@@ -130,17 +125,20 @@ class SearchFragment : Fragment() {
 
     private fun showNoVacancyError() {
         with(binding) {
-            searchRecycleView.isVisible = false
+            searchRecycleView.isVisible = true
             centerProgressBar.isVisible = false
             bottomProgressBar.isVisible = false
             textUnderSearch.isVisible = false
             searchDefaultPlaceholder.isVisible = false
-            noVacancyToShow.isVisible = true
+            noVacancyToShow.isVisible = false
             noConnectionPlaceholder.isVisible = false
+            binding.textUnderSearch.isVisible = false
+            binding.noVacancyToShow.isVisible = true
+            binding.noVacancyToShowText.isVisible = true
         }
     }
 
-    private fun showNoConnectionError() {
+    private fun showNoConnectionError(errorVariant: ErrorVariant) {
         with(binding) {
             searchRecycleView.isVisible = false
             centerProgressBar.isVisible = false
@@ -148,7 +146,20 @@ class SearchFragment : Fragment() {
             textUnderSearch.isVisible = false
             searchDefaultPlaceholder.isVisible = false
             noVacancyToShow.isVisible = false
-            noConnectionPlaceholder.isVisible = true
+            noConnectionPlaceholder.isVisible = false
+            noConnectionText.isVisible = false
+            noVacancyToShowText.isVisible = false
+        }
+        when (errorVariant) {
+            ErrorVariant.NO_CONNECTION -> {
+                binding.noConnectionPlaceholder.isVisible = true
+                binding.noConnectionText.isVisible = true
+            }
+
+            else -> {
+                binding.noVacancyToShowText.isVisible = true
+                binding.noVacancyToShow.isVisible = true
+            }
 
         }
     }
@@ -162,7 +173,6 @@ class SearchFragment : Fragment() {
             searchDefaultPlaceholder.isVisible = false
             noVacancyToShow.isVisible = false
             noConnectionPlaceholder.isVisible = false
-
         }
     }
 
@@ -175,6 +185,23 @@ class SearchFragment : Fragment() {
             searchDefaultPlaceholder.isVisible = true
             noVacancyToShow.isVisible = false
             noConnectionPlaceholder.isVisible = false
+            noConnectionText.isVisible = false
+            noVacancyToShowText.isVisible = false
         }
+    }
+
+    private fun actionOnClick(id: String) {
+        if (!viewModel.isClickable) return
+        viewModel.actionOnClick()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        hideKeyboard(binding.searchQuery)
     }
 }
