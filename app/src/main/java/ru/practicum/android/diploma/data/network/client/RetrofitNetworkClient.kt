@@ -36,6 +36,7 @@ class RetrofitNetworkClient(
             response.apply { resultCode = CODE_SUCCESS }
         } catch (exception: HttpException) {
             response.apply { resultCode = exception.code() }
+            throw exception
         } catch (exception: java.net.UnknownHostException) {
             return Response().apply { resultCode = -1 }
         }

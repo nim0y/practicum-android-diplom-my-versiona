@@ -29,7 +29,6 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         }
 
     fun onSearchQueryChange(query: String?) {
-
         lastQuery = query
         searchDebounce(query)
     }
@@ -42,7 +41,6 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         isClickable = false
         clickDebounce(true)
     }
-
 
     private fun search(query: String?) {
         if (query.isNullOrBlank()) return

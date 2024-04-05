@@ -12,6 +12,9 @@ import ru.practicum.android.diploma.domain.api.SearchRepository
 import ru.practicum.android.diploma.domain.models.SearchResponseModel
 import ru.practicum.android.diploma.domain.models.VacancyModel
 import ru.practicum.android.diploma.util.Constants
+import ru.practicum.android.diploma.util.Constants.BAD_REQUEST_ERROR
+import ru.practicum.android.diploma.util.Constants.NOT_FOUND_ERROR
+import ru.practicum.android.diploma.util.Constants.NO_CONNECTION_ERROR
 import ru.practicum.android.diploma.util.ErrorVariant
 
 class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRepository {
@@ -38,19 +41,19 @@ class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRep
         query: String,
         page: Int,
         filters: HashMap<String, String>
-    ): Flow<Response<out SearchResponseModel>> =flow{
+    ): Flow<Response<out SearchResponseModel>> = flow {
         val response = networkClient.doRequest(Request.MainSearchRequest(query, page, filters))
         if (response.resultCode == Constants.CODE_SUCCESS) {
-            emit (Response.Success((response as SearchResponseDto).mapToModel()))
+            emit(Response.Success((response as SearchResponseDto).mapToModel()))
         } else {
-            emit (Response.Error(getErrorType(response.resultCode)))
+            emit(Response.Error(getErrorType(response.resultCode)))
         }
     }
 
     private fun getErrorType(code: Int): ErrorVariant = when (code) {
-        -1 -> ErrorVariant.NO_CONNECTION
-        400 -> ErrorVariant.BAD_REQUEST
-        404 -> ErrorVariant.NOT_FOUND
+        NO_CONNECTION_ERROR -> ErrorVariant.NO_CONNECTION
+        BAD_REQUEST_ERROR -> ErrorVariant.BAD_REQUEST
+        NOT_FOUND_ERROR -> ErrorVariant.NOT_FOUND
         else -> ErrorVariant.UNEXPECTED
     }
 }
