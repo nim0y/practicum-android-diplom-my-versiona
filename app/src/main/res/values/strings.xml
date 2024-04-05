@@ -16,4 +16,5 @@
     <string name="no_salary_info">Зарплата не указана</string>
     <string name="from">от</string>
     <string name="to">до</string>
+    <string name="filter_icon_description">filter_icon_description</string>
 </resources>
