@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.data.network.client
 
 import android.content.Context
-import retrofit2.HttpException
 import ru.practicum.android.diploma.data.network.api.HeadHuntersApi
 import ru.practicum.android.diploma.data.network.api.Request
 import ru.practicum.android.diploma.data.network.api.Request.MainSearchRequest
@@ -34,9 +33,6 @@ class RetrofitNetworkClient(
                 }
             }
             response.apply { resultCode = CODE_SUCCESS }
-        } catch (exception: HttpException) {
-            response.apply { resultCode = exception.code() }
-            throw exception
         } catch (exception: java.net.UnknownHostException) {
             return Response().apply { resultCode = -1 }
         }
