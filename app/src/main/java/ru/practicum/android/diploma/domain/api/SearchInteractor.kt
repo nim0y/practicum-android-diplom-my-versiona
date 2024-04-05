@@ -4,8 +4,7 @@ import ru.practicum.android.diploma.domain.Response
 import ru.practicum.android.diploma.domain.models.SearchResponseModel
 import ru.practicum.android.diploma.domain.models.VacancyModel
 
-interface MainRepository {
-
+interface SearchInteractor {
     suspend fun getSimilarVacancies(id: String): Response<out SearchResponseModel>
 
     suspend fun getCurrentVacancyDetails(id: String): Response<out VacancyModel>
