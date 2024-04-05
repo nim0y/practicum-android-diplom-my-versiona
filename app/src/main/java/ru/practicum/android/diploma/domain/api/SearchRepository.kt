@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.domain.api
 
+import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.domain.Response
 import ru.practicum.android.diploma.domain.models.SearchResponseModel
 import ru.practicum.android.diploma.domain.models.VacancyModel
@@ -14,5 +15,5 @@ interface SearchRepository {
         query: String,
         page: Int,
         filters: HashMap<String, String>
-    ): Response<out SearchResponseModel>
+    ): Flow<Response<out SearchResponseModel>>
 }

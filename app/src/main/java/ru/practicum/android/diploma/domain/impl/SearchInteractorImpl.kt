@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.domain.impl
 
+import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.domain.Response
 import ru.practicum.android.diploma.domain.api.SearchInteractor
 import ru.practicum.android.diploma.domain.api.SearchRepository
@@ -19,7 +20,7 @@ class SearchInteractorImpl(private val searchRepository: SearchRepository) : Sea
         query: String,
         page: Int,
         filters: HashMap<String, String>
-    ): Response<out SearchResponseModel> {
+    ): Flow<Response<out SearchResponseModel>> {
         return searchRepository.getVacancies(query, page, filters)
     }
 }

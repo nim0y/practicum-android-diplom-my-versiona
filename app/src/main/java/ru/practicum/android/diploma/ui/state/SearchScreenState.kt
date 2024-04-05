@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.ui.state
 
 import ru.practicum.android.diploma.domain.models.VacancyModel
-import ru.practicum.android.diploma.util.ErrorVariants
+import ru.practicum.android.diploma.util.ErrorVariant
 
 sealed interface SearchScreenState {
 
@@ -22,6 +22,6 @@ sealed interface SearchScreenState {
     ) : SearchScreenState
 
     data class Error(
-        val error: ErrorVariants
+        val errorVariant: ErrorVariant
     ) : SearchScreenState
 }

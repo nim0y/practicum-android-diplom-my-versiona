@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.data.repository
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.SearchResponseDto
 import ru.practicum.android.diploma.data.dto.VacancyDto
 import ru.practicum.android.diploma.data.mapper.mapToModel
@@ -10,7 +12,7 @@ import ru.practicum.android.diploma.domain.api.SearchRepository
 import ru.practicum.android.diploma.domain.models.SearchResponseModel
 import ru.practicum.android.diploma.domain.models.VacancyModel
 import ru.practicum.android.diploma.util.Constants
-import ru.practicum.android.diploma.util.ErrorVariants
+import ru.practicum.android.diploma.util.ErrorVariant
 
 class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRepository {
 
@@ -19,7 +21,7 @@ class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRep
         return if (response.resultCode == Constants.CODE_SUCCESS) {
             Response.Success((response as SearchResponseDto).mapToModel())
         } else {
-            Response.Error(getErrorVariant(response.resultCode))
+            Response.Error(getErrorType(response.resultCode))
         }
     }
 
@@ -28,7 +30,7 @@ class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRep
         return if (response.resultCode == Constants.CODE_SUCCESS) {
             Response.Success((response as VacancyDto).mapToModel())
         } else {
-            Response.Error(getErrorVariant(response.resultCode))
+            Response.Error(getErrorType(response.resultCode))
         }
     }
 
@@ -36,19 +38,19 @@ class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRep
         query: String,
         page: Int,
         filters: HashMap<String, String>
-    ): Response<out SearchResponseModel> {
+    ): Flow<Response<out SearchResponseModel>> =flow{
         val response = networkClient.doRequest(Request.MainSearchRequest(query, page, filters))
-        return if (response.resultCode == Constants.CODE_SUCCESS) {
-            Response.Success((response as SearchResponseDto).mapToModel())
+        if (response.resultCode == Constants.CODE_SUCCESS) {
+            emit (Response.Success((response as SearchResponseDto).mapToModel()))
         } else {
-            Response.Error(getErrorVariant(response.resultCode))
+            emit (Response.Error(getErrorType(response.resultCode)))
         }
     }
 
-    private fun getErrorVariant(code: Int): ErrorVariants = when (code) {
-        -1 -> ErrorVariants.NO_CONNECTION
-        400 -> ErrorVariants.BAD_REQUEST
-        404 -> ErrorVariants.NOT_FOUND
-        else -> ErrorVariants.UNEXPECTED
+    private fun getErrorType(code: Int): ErrorVariant = when (code) {
+        -1 -> ErrorVariant.NO_CONNECTION
+        400 -> ErrorVariant.BAD_REQUEST
+        404 -> ErrorVariant.NOT_FOUND
+        else -> ErrorVariant.UNEXPECTED
     }
 }

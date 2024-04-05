@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.util
 
-enum class ErrorVariants(val code: Int) {
+enum class ErrorVariant(val code: Int) {
     NOT_FOUND(404),
     NO_CONNECTION(-1),
     UNEXPECTED(-2),
