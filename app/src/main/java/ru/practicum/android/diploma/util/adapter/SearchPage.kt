@@ -33,24 +33,31 @@ open class SearchPage(
         val page: Int = params.key ?: 0
         val pageSize: Int = VACANCIES_PER_PAGE
         return when (val response = search(query, page)) {
-            is Response.Error -> {
-                when (response.error) {
-                    NO_CONNECTION -> LoadResult.Error(ConnectException())
-                    BAD_REQUEST -> LoadResult.Error(ServerError())
-                    else -> LoadResult.Error(NullPointerException())
-                }
-            }
+            is Response.Error -> error(response)
+            is Response.Success -> success(response, pageSize, page)
+        }
+    }
 
-            is Response.Success -> {
-                if (response.data.vacancies.isNotEmpty()) {
-                    val data = response.data.vacancies
-                    val nextKey = if (data.size < pageSize) null else page + 1
-                    val prevKey = if (page == 0) null else page - 1
-                    LoadResult.Page(data, prevKey, nextKey)
-                } else {
-                    LoadResult.Error(NullPointerException())
-                }
-            }
+    private fun success(
+        response: Response.Success<out SearchResponseModel>,
+        pageSize: Int,
+        page: Int
+    ): LoadResult<Int, VacancyModel> {
+        return if (response.data.vacancies.isNotEmpty()) {
+            val data = response.data.vacancies
+            val nextKey = if (data.size < pageSize) null else page + 1
+            val prevKey = if (page == 0) null else page - 1
+            LoadResult.Page(data, prevKey, nextKey)
+        } else {
+            LoadResult.Error(NullPointerException())
+        }
+    }
+
+    private fun error(response: Response.Error<out SearchResponseModel>): LoadResult<Int, VacancyModel> {
+        return when (response.error) {
+            NO_CONNECTION -> LoadResult.Error(ConnectException())
+            BAD_REQUEST -> LoadResult.Error(ServerError())
+            else -> LoadResult.Error(NullPointerException())
         }
     }
 }
