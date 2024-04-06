@@ -16,7 +16,7 @@ class SearchInteractorImpl(private val searchRepository: SearchRepository) : Sea
         return searchRepository.getCurrentVacancyDetails(id)
     }
 
-    override suspend fun getVacancies(
+    override fun getVacancies(
         query: String,
         page: Int,
         filters: HashMap<String, String>

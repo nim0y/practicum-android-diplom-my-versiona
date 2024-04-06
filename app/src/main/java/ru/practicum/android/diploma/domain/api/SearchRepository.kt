@@ -11,7 +11,7 @@ interface SearchRepository {
 
     suspend fun getCurrentVacancyDetails(id: String): Response<out VacancyModel>
 
-    suspend fun getVacancies(
+    fun getVacancies(
         query: String,
         page: Int,
         filters: HashMap<String, String>

@@ -37,7 +37,7 @@ class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRep
         }
     }
 
-    override suspend fun getVacancies(
+    override fun getVacancies(
         query: String,
         page: Int,
         filters: HashMap<String, String>
