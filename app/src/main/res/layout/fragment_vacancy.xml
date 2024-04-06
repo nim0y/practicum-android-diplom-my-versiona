@@ -232,6 +232,20 @@
                 app:layout_constraintTop_toBottomOf="@id/description_title" />
 
             <TextView
+                android:id="@+id/duties_list"
+                style="@style/text_16_display_medium_500"
+                android:layout_width="@dimen/zero_0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:text="@string/duties"
+                android:textColor="?attr/colorOnPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/duties_subtitle"
+                tools:text="dkdkdkkdk" />
+
+
+            <TextView
                 android:id="@+id/demands_subtitle"
                 style="@style/text_16_display_medium_500"
                 android:layout_width="@dimen/zero_0dp"
@@ -241,7 +255,20 @@
                 android:textColor="?attr/colorOnPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/duties_subtitle" />
+                app:layout_constraintTop_toBottomOf="@id/duties_list" />
+
+            <TextView
+                android:id="@+id/demands_list"
+                style="@style/text_16_display_medium_500"
+                android:layout_width="@dimen/zero_0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:text="@string/duties"
+                android:textColor="?attr/colorOnPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/demands_subtitle"
+                tools:text="dkdkdkkdk" />
 
             <TextView
                 android:id="@+id/conditions_subtitle"
@@ -253,7 +280,20 @@
                 android:textColor="?attr/colorOnPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/demands_subtitle" />
+                app:layout_constraintTop_toBottomOf="@id/demands_list" />
+
+            <TextView
+                android:id="@+id/conditions_list"
+                style="@style/text_16_display_medium_500"
+                android:layout_width="@dimen/zero_0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:text="@string/duties"
+                android:textColor="?attr/colorOnPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/conditions_subtitle"
+                tools:text="dkdkdkkdk" />
 
 
             <androidx.constraintlayout.widget.Group
@@ -273,7 +313,7 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/conditions_subtitle" />
+                app:layout_constraintTop_toBottomOf="@id/conditions_list" />
 
             <TextView
                 android:id="@+id/core_skills"
