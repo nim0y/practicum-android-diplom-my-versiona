@@ -7,6 +7,8 @@ import ru.practicum.android.diploma.data.network.api.Request
 import ru.practicum.android.diploma.data.network.api.Request.MainSearchRequest
 import ru.practicum.android.diploma.data.network.api.Response
 import ru.practicum.android.diploma.util.Constants.CODE_SUCCESS
+import ru.practicum.android.diploma.util.Constants.NO_CONNECTION_ERROR
+import ru.practicum.android.diploma.util.isConnected
 
 class RetrofitNetworkClient(
     private val context: Context,
@@ -14,6 +16,9 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     override suspend fun doRequest(request: Request): Response {
+        if (!isConnected(context)) {
+            return Response().apply { resultCode = NO_CONNECTION_ERROR }
+        }
         var response = Response()
         return try {
             response = when (request) {

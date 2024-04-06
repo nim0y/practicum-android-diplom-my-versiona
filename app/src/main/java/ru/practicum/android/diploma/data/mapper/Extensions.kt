@@ -14,7 +14,7 @@ import ru.practicum.android.diploma.domain.models.fields.SalaryModel
 
 fun VacancyDto.mapToModel() = VacancyModel(id, area.mapToModel(), employer?.mapToModel(), name, salary?.mapToModel())
 
-fun SearchResponseDto.mapToModel() = SearchResponseModel(items.map { it.mapToModel() }, page, pages, perPage)
+fun SearchResponseDto.mapToModel() = SearchResponseModel(found, items.map { it.mapToModel() }, page, pages, perPage)
 
 fun SalaryDto.mapToModel() = SalaryModel(currency, from, gross, to)
 

@@ -25,7 +25,7 @@
             android:layout_gravity="end"
             android:layout_margin="@dimen/dimen_8dp"
             android:scaleType="center"
-            android:contentDescription="filter_icon_description"/>
+            android:contentDescription="@string/filter_icon_description" />
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
@@ -126,6 +126,7 @@
         tools:visibility="gone" />
 
     <TextView
+        android:id="@+id/no_connection_text"
         style="@style/text_22_display_medium_500"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -152,6 +153,7 @@
         tools:visibility="gone" />
 
     <TextView
+        android:id="@+id/no_vacancy_to_show_text"
         style="@style/text_22_display_medium_500"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
