@@ -32,7 +32,8 @@ class ViewHolder(
             root.setOnClickListener { onClick(item) }
             root.setOnLongClickListener {
                 onLongClick(item)
-                true }
+                true
+            }
 
             Glide.with(itemView)
                 .load(item.employer?.logoUrls?.logo90)
