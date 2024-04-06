@@ -242,7 +242,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/duties_subtitle"
-                tools:text="dkdkdkkdk" />
+                tools:text="@string/no_information" />
 
 
             <TextView
@@ -268,7 +268,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/demands_subtitle"
-                tools:text="dkdkdkkdk" />
+                tools:text="@string/no_information" />
 
             <TextView
                 android:id="@+id/conditions_subtitle"
@@ -293,7 +293,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/conditions_subtitle"
-                tools:text="dkdkdkkdk" />
+                tools:text="@string/no_information" />
 
 
             <androidx.constraintlayout.widget.Group
