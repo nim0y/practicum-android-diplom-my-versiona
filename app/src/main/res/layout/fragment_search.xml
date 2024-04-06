@@ -18,14 +18,14 @@
 
         <ImageView
             android:id="@+id/filter_ic"
-            android:src="@drawable/ic_filter_off_12px"
-            android:clickable="true"
             android:layout_width="@dimen/icon_height_48dp"
             android:layout_height="@dimen/icon_width_48dp"
             android:layout_gravity="end"
             android:layout_margin="@dimen/dimen_8dp"
+            android:clickable="true"
+            android:contentDescription="@string/filter_icon_description"
             android:scaleType="center"
-            android:contentDescription="@string/filter_icon_description" />
+            android:src="@drawable/ic_filter_off_12px" />
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
@@ -38,19 +38,21 @@
 
         <EditText
             android:id="@+id/search_query"
-            android:layout_width="match_parent"
             style="@style/search_edittext_style"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_56dp"
             android:layout_gravity="center"
-            android:textCursorDrawable="@drawable/ic_edit_text_cursor"
             android:layout_marginHorizontal="@dimen/margin_16dp"
             android:background="@drawable/shape_search_edit_text"
             android:hint="@string/search_hint"
+            android:imeOptions="actionDone"
+            android:inputType="text"
             android:paddingStart="@dimen/dimen_16dp"
             android:paddingTop="@dimen/dimen_4dp"
             android:paddingEnd="@dimen/dimen_8dp"
             android:paddingBottom="@dimen/dimen_4dp"
-             />
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/ic_edit_text_cursor" />
 
         <ImageView
             android:id="@+id/search_icon_loupe"
@@ -62,6 +64,7 @@
             android:scaleType="center"
             android:src="@drawable/ic_search_loupe_18px"
             android:visibility="visible" />
+
         <ImageView
             android:id="@+id/clear_cross_ic"
             android:layout_width="@dimen/icon_width_48dp"
@@ -74,12 +77,29 @@
             android:visibility="gone" />
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/zero_0dp"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/dimen_38dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@id/bottom_progress_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_edit_frame"
+        tools:listitem="@layout/search_item_view" />
+
     <TextView
         android:id="@+id/text_under_search"
         style="@style/search_textview_under_query"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dimen_3dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,18 +107,6 @@
         tools:text="Beaver colossus"
         tools:visibility="visible" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_recycle_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_16dp"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_edit_frame"
-        tools:listitem="@layout/search_item_view" />
 
     <ImageView
         android:id="@+id/search_default_placeholder"
@@ -171,13 +179,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
         android:indeterminateTint="@color/light_blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_edit_frame"
-        />
+        app:layout_constraintTop_toBottomOf="@id/search_edit_frame" />
+
     <ProgressBar
         android:id="@+id/bottom_progress_bar"
         android:layout_width="wrap_content"
@@ -188,6 +196,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_recycle_view"/>
+        app:layout_constraintTop_toBottomOf="@id/search_recycle_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
