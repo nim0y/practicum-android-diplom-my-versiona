@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.Response
 import ru.practicum.android.diploma.domain.api.SearchInteractor
 import ru.practicum.android.diploma.domain.models.SearchResponseModel
@@ -28,7 +30,8 @@ import ru.practicum.android.diploma.util.adapter.ServerError
 import ru.practicum.android.diploma.util.debounce
 import java.net.ConnectException
 
-class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {
+class SearchViewModel(private val searchInteractor: SearchInteractor, private val context: Context) : ViewModel() {
+    val sizeLoadPage = 1
     private val _searchState = MutableLiveData<SearchScreenState>()
     val searchState: LiveData<SearchScreenState> = _searchState
     val actionStateFlow = MutableSharedFlow<String>()
@@ -73,7 +76,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
 
     fun listener(loadState: CombinedLoadStates) {
         viewModelScope.launch(Dispatchers.Main) {
-            when (val refresh = loadState.source.refresh) {
+            when (val refresh = loadState.source.append) {
                 is LoadState.Error -> when (refresh.error) {
                     is ConnectException -> _searchState.value =
                         SearchScreenState.Error(ErrorVariant.NO_CONNECTION)
@@ -85,14 +88,18 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
                         SearchScreenState.Error(ErrorVariant.BAD_REQUEST)
                 }
 
-                LoadState.Loading -> {}
+                LoadState.Loading -> {
+                    setState(SearchScreenState.Loading)
+                }
+
                 is LoadState.NotLoading -> {
                     if (stateRefresh == LoadState.Loading) {
                         setState(SearchScreenState.Success(listOf(), found ?: 0))
                     }
                 }
             }
-            stateRefresh = loadState.source.refresh
+
+            stateRefresh = loadState.source.append
 
             val errorState = when {
                 loadState.source.append is LoadState.Error -> loadState.append as LoadState.Error
@@ -100,7 +107,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
                 else -> null
             }
             when (errorState?.error) {
-                is ConnectException -> errorMessage.value = "Нет интернета"
+                is ConnectException -> errorMessage.value = context.getString(R.string.no_connection)
             }
         }
     }
@@ -115,12 +122,12 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     }
 
     fun getPagingData(search: String): StateFlow<PagingData<VacancyModel>> {
-        return Pager(PagingConfig(pageSize = Constants.VACANCIES_PER_PAGE)) {
+        return Pager(PagingConfig(pageSize = Constants.VACANCIES_PER_PAGE, initialLoadSize = sizeLoadPage)) {
             SearchPage(search, ::search)
         }.flow.stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     }
 
-    fun clearMessageAddPlayList() {
+    fun clearMessage() {
         errorMessage.value = null
     }
 }
