@@ -97,7 +97,7 @@ class SearchFragment : Fragment() {
         viewModel.errorMessage.observe(viewLifecycleOwner) {
             if (it != null) {
                 Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-                viewModel.clearMessageAddPlayList()
+                viewModel.clearMessage()
             }
         }
     }
