@@ -2,6 +2,8 @@
     <string name="app_name">Practicum-Android-Diploma</string>
     <string name="main_screen_title">Главная</string>
     <string name="favorite_screen_title">Избранное</string>
+    <string name="favorite_list_empty">Список пуст</string>
+    <string name="error_getting_vacancies">Не удалось получить список вакансий</string>
     <string name="team_screen_title">Команда</string>
     <string name="title_team">Над приложением работали</string>
     <string name="name1">Александр Щербаков</string>
