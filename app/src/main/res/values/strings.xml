@@ -19,4 +19,17 @@
     <string name="filter_icon_description">filter_icon_description</string>
     <string name="there_no_such_vacancies">Таких вакансий нет</string>
     <string name="server_error">Ошибка сервера</string>
+    <string name="vacancy_toolbar">Вакансия</string>
+    <string name="no_information">Нет информации</string>
+    <string name="experience_title">Требуемый опыт</string>
+    <string name="vacancy_description_title">Описание вакансии</string>
+    <string name="duties">Обязанности</string>
+    <string name="demands">Требования</string>
+    <string name="conditions">Условия</string>
+    <string name="core_skills_title">Ключевые навыки</string>
+    <string name="contacts_title">Контакты</string>
+    <string name="contact_person">Контактное лицо</string>
+    <string name="email_title">E-mail</string>
+    <string name="phone_title">Телефон</string>
+    <string name="comment_title">Комментарий</string>
 </resources>
