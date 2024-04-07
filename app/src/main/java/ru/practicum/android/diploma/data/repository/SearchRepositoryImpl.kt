@@ -1,14 +1,14 @@
 package ru.practicum.android.diploma.data.repository
 
 import ru.practicum.android.diploma.data.dto.SearchResponseDto
-import ru.practicum.android.diploma.data.dto.VacancyDto
+import ru.practicum.android.diploma.data.dto.VacancyDetailsDto
 import ru.practicum.android.diploma.data.mapper.mapToModel
 import ru.practicum.android.diploma.data.network.api.Request
 import ru.practicum.android.diploma.data.network.client.NetworkClient
 import ru.practicum.android.diploma.domain.Response
 import ru.practicum.android.diploma.domain.api.SearchRepository
 import ru.practicum.android.diploma.domain.models.SearchResponseModel
-import ru.practicum.android.diploma.domain.models.VacancyModel
+import ru.practicum.android.diploma.domain.models.VacancyDetailsModel
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.Constants.BAD_REQUEST_ERROR
 import ru.practicum.android.diploma.util.Constants.NO_CONNECTION_ERROR
@@ -25,10 +25,10 @@ class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRep
         }
     }
 
-    override suspend fun getCurrentVacancyDetails(id: String): Response<out VacancyModel> {
+    override suspend fun getCurrentVacancyDetails(id: String): Response<out VacancyDetailsModel> {
         val response = networkClient.doRequest(Request.CurrentVacancyDetails(id))
         return if (response.resultCode == Constants.CODE_SUCCESS) {
-            Response.Success((response as VacancyDto).mapToModel())
+            Response.Success((response as VacancyDetailsDto).mapToModel())
         } else {
             Response.Error(getErrorType(response.resultCode))
         }

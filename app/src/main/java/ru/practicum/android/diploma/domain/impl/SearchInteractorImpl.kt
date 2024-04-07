@@ -4,14 +4,14 @@ import ru.practicum.android.diploma.domain.Response
 import ru.practicum.android.diploma.domain.api.SearchInteractor
 import ru.practicum.android.diploma.domain.api.SearchRepository
 import ru.practicum.android.diploma.domain.models.SearchResponseModel
-import ru.practicum.android.diploma.domain.models.VacancyModel
+import ru.practicum.android.diploma.domain.models.VacancyDetailsModel
 
 class SearchInteractorImpl(private val searchRepository: SearchRepository) : SearchInteractor {
     override suspend fun getSimilarVacancies(id: String): Response<out SearchResponseModel> {
         return searchRepository.getSimilarVacancies(id)
     }
 
-    override suspend fun getCurrentVacancyDetails(id: String): Response<out VacancyModel> {
+    override suspend fun getCurrentVacancyDetails(id: String): Response<out VacancyDetailsModel> {
         return searchRepository.getCurrentVacancyDetails(id)
     }
 
