@@ -21,4 +21,11 @@
     <dimen name="margin_size_8">8dp</dimen>
     <dimen name="margin_size_35">35dp</dimen>
     <dimen name="margin_size_24">24dp</dimen>
+    <dimen name="zero_0dp">0dp</dimen>
+    <dimen name="dimen_32dp">32dp</dimen>
+    <dimen name="dimen_42dp">42dp</dimen>
+    <dimen name="dimen_1dp">1dp</dimen>
+    <dimen name="dimen_11dp">11dp</dimen>
+    <dimen name="dimen_38dp">38dp</dimen>
+    <dimen name="dimen_3dp">3dp</dimen>
 </resources>
