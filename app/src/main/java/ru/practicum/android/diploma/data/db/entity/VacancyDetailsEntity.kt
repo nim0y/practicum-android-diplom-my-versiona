@@ -25,7 +25,3 @@ data class VacancyDetailsEntity(
     val nameExperience: String? = null,
     val nameSchedule: String? = null,
 )
-
-
-
-
