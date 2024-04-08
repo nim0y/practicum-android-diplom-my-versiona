@@ -60,9 +60,7 @@ fun KeySkillsEntity.mapToModel() = KeySkillsModel(name)
 
 fun List<PhonesEntity>?.mapToModel() = this?.map { it.mapToModel() }
 
-fun PhonesEntity.mapToModel() = PhonesModel(
-    cityCode, comment, countryCode, formatted, number
-)
+fun PhonesEntity.mapToModel() = PhonesModel(cityCode, comment, countryCode, formatted, number)
 
 fun EmployerEntity.mapToModel() = EmployerModel(
     id = id,

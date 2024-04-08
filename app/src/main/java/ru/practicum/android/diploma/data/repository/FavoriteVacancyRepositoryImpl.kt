@@ -14,7 +14,6 @@ class FavoriteVacancyRepositoryImpl(
     override fun getVacancy(vacancyId: String): Flow<VacancyDetailsModel> =
         db.favoriteVacancyDao().getVacancy(vacancyId).map { it.mapToModel() }
 
-
     override fun getListVacancy(): Flow<List<VacancyDetailsModel>> =
         db.favoriteVacancyDao().getVacancyList().map { list ->
             list.map { it.mapToModel() }
