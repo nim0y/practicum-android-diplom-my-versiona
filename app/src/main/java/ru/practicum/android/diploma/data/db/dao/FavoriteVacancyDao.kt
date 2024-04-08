@@ -25,7 +25,17 @@ interface FavoriteVacancyDao {
     @Query("DELETE FROM VacancyDetailsEntity WHERE id = :vacancyId")
     suspend fun deleteVacancy(vacancyId: String)
 
+    @Query("DELETE FROM PhonesEntity WHERE vacancyId = :vacancyId")
+    suspend fun deletePhones(vacancyId: String)
+
+    @Query("DELETE FROM KeySkillsEntity WHERE vacancyId = :vacancyId")
+    suspend fun deleteKeySkills(vacancyId: String)
+
     @Transaction
     @Query("SELECT * FROM VacancyDetailsEntity")
     fun getVacancyList(): Flow<List<VacancyDataEntity>>
+
+    @Transaction
+    @Query("SELECT * FROM VacancyDetailsEntity WHERE id = :vacancyId")
+    fun getVacancy(vacancyId: String): Flow<VacancyDataEntity>
 }

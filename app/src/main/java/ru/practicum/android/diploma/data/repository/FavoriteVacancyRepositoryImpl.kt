@@ -11,6 +11,10 @@ class FavoriteVacancyRepositoryImpl(
     private val db: AppDataBase
 ) : FavoriteVacancyRepository {
 
+    override fun getVacancy(vacancyId: String): Flow<VacancyDetailsModel> =
+        db.favoriteVacancyDao().getVacancy(vacancyId).map { it.mapToModel() }
+
+
     override fun getListVacancy(): Flow<List<VacancyDetailsModel>> =
         db.favoriteVacancyDao().getVacancyList().map { list ->
             list.map { it.mapToModel() }
@@ -18,6 +22,8 @@ class FavoriteVacancyRepositoryImpl(
 
     override suspend fun addVacancy(vacancy: VacancyDetailsModel) {
         val entity = vacancy.mapToEntity()
+        db.favoriteVacancyDao().deletePhones(vacancy.id)
+        db.favoriteVacancyDao().deleteKeySkills(vacancy.id)
         db.favoriteVacancyDao().insertVacancy(entity.vacancyDetails)
         db.favoriteVacancyDao().insertKeySkills(entity.keySkills ?: listOf())
         db.favoriteVacancyDao().insertPhones(entity.phonesContact ?: listOf())

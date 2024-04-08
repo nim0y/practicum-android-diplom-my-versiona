@@ -14,4 +14,6 @@ class FavoriteVacancyImpl(
     override suspend fun addVacancy(vacancy: VacancyDetailsModel) = repository.addVacancy(vacancy)
 
     override suspend fun delVacancy(vacancyId: String) = repository.delVacancy(vacancyId)
+
+    override fun getVacancy(vacancyId: String): Flow<VacancyDetailsModel> = repository.getVacancy(vacancyId)
 }
