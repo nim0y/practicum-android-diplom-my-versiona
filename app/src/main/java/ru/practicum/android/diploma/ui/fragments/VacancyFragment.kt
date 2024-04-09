@@ -45,11 +45,11 @@ class VacancyFragment : Fragment() {
         binding.vacancyToolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
-        var vacancyId: String? = null
+        var vacancyId: String = ""
         val bundle = arguments
         if (bundle != null) {
-            vacancyId = bundle.getString("vacancyId")
-            viewModel.fetchDetails(vacancyId.toString())
+            vacancyId = bundle.getString("vacancyId").toString()
+            viewModel.fetchDetails(vacancyId)
             binding.loadingProgressBar.isVisible = false
         } else {
             binding.loadingProgressBar.isVisible = true
@@ -73,7 +73,11 @@ class VacancyFragment : Fragment() {
         }
 
         binding.vacancyFavoriteIcon.setOnClickListener {
-            viewModel.onLikeClick(vacancyId ?: return@setOnClickListener)
+            viewModel.onLikeClick(vacancyId)
+        }
+
+        binding.contactsPhone.setOnClickListener {
+            viewModel.dialPhone(binding.contactsPhone.text.toString().trim())
         }
 
     }
@@ -128,7 +132,6 @@ class VacancyFragment : Fragment() {
                 vacancy.salary?.to,
                 vacancy.salary?.currency
             )
-
             Glide.with(this@VacancyFragment)
                 .load(vacancy.employer?.logoUrls?.logo90)
                 .placeholder(R.drawable.ic_placeholder_30px)
@@ -141,7 +144,6 @@ class VacancyFragment : Fragment() {
                     )
                 )
                 .into(employerLogo)
-
             companyName.text = vacancy.employer?.name
             experience.text = vacancy.experience?.name
             scheduleEmployment.text = vacancy.schedule?.name
@@ -157,20 +159,13 @@ class VacancyFragment : Fragment() {
             contactEmail.text = vacancy.contacts?.email
             contactsPhone.text = getPhonesText(vacancy.contacts?.phones)
             contactsComment.text = getPhonesCommentsText(vacancy.contacts?.phones)
-
             showFields()
             hideGroups(vacancy)
-
             binding.vacancyShareIcon.setOnClickListener {
                 if (vacancy.alternateUrl != null) viewModel.vacancyShare(vacancy.alternateUrl)
             }
-
             binding.contactEmail.setOnClickListener {
                 viewModel.sendEmail(email = vacancy.contacts?.email.toString(), subject = "Отклик на вакнсию")
-            }
-
-            binding.contactsPhone.setOnClickListener {
-                viewModel.dialPhone(binding.contactsPhone.text.toString().trim())
             }
         }
     }

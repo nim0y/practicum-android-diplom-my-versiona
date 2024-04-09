@@ -46,7 +46,9 @@ class VacancyViewModel(
                 }
                 actionOnClick()
             }
-        } else return
+        } else {
+            return
+        }
     }
 
     fun fetchDetails(id: String) {
