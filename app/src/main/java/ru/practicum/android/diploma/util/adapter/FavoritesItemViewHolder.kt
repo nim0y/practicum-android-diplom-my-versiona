@@ -6,7 +6,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.SearchItemViewBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetailsModel
-import ru.practicum.android.diploma.domain.models.VacancyModel
 import ru.practicum.android.diploma.util.adapter.ConvertCurrency.converterSalaryToString
 
 class FavoritesItemViewHolder(
