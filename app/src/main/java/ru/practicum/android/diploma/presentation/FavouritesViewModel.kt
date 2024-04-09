@@ -30,13 +30,13 @@ class FavouritesViewModel(private val interactor: FavoriteVacancyInteractor) : V
         viewModelScope.launch(Dispatchers.IO) {
             interactor.getListVacancy()
                 .catch {
-                    favoritesState.value = FavouritesScreenState.Error
+                    favoritesState.postValue(FavouritesScreenState.Error)
                 }
                 .collect {
                     if (it.isEmpty()) {
-                        favoritesState.value = FavouritesScreenState.Empty
+                        favoritesState.postValue(FavouritesScreenState.Empty)
                     } else {
-                        favoritesState.value = FavouritesScreenState.ShowContent(it)
+                        favoritesState.postValue(FavouritesScreenState.ShowContent(it))
                     }
                 }
         }

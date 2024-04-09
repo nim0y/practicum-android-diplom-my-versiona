@@ -6,7 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFavouritesBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetailsModel
 import ru.practicum.android.diploma.presentation.FavouritesViewModel
@@ -29,14 +32,23 @@ class FavouritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.start()
+        binding.rvVacancies.adapter = favoritesAdapter
+        binding.rvVacancies.layoutManager = LinearLayoutManager(context)
         viewModel.favoritesState.observe(viewLifecycleOwner) {
             render(it)
         }
     }
 
-    fun openVacancy(vacancy: VacancyDetailsModel) {
+    override fun onStart() {
+        super.onStart()
+        viewModel.start()
+    }
 
+    fun openVacancy(vacancy: VacancyDetailsModel) {
+        val navController = findNavController()
+        val bundle = Bundle()
+        bundle.putString("vacancyId", vacancy.id)
+        navController.navigate(R.id.vacancyFragment, bundle)
     }
 
     fun render(state: FavouritesScreenState) {
@@ -60,6 +72,7 @@ class FavouritesFragment : Fragment() {
     }
 
     fun stateShowContent(data: List<VacancyDetailsModel>) {
+        favoritesAdapter.setItems(data)
         binding.rvVacancies.isVisible = true
         binding.groupError.isVisible = false
         binding.groupEmpty.isVisible = false
