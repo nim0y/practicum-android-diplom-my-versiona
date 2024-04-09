@@ -125,25 +125,14 @@ class VacancyFragment : Fragment() {
 
     private fun addViews(vacancy: VacancyDetailsModel) {
         with(binding) {
-            vacancyName.text = vacancy.name ?: "no info"
+            vacancyName.text = vacancy.name ?: getString(R.string.no_information)
             area.text = vacancy.area?.name
             vacancySalary.text = ConvertCurrency.converterSalaryToString(
                 vacancy.salary?.from,
                 vacancy.salary?.to,
                 vacancy.salary?.currency
             )
-            Glide.with(this@VacancyFragment)
-                .load(vacancy.employer?.logoUrls?.logo90)
-                .placeholder(R.drawable.ic_placeholder_30px)
-                .centerCrop()
-                .transform(
-                    RoundedCorners(
-                        this@VacancyFragment.resources.getDimensionPixelSize(
-                            R.dimen.dimen_12dp
-                        )
-                    )
-                )
-                .into(employerLogo)
+            setLogo(vacancy)
             companyName.text = vacancy.employer?.name
             experience.text = vacancy.experience?.name
             scheduleEmployment.text = vacancy.schedule?.name
@@ -159,8 +148,10 @@ class VacancyFragment : Fragment() {
             contactEmail.text = vacancy.contacts?.email
             contactsPhone.text = getPhonesText(vacancy.contacts?.phones)
             contactsComment.text = getPhonesCommentsText(vacancy.contacts?.phones)
+
             showFields()
             hideGroups(vacancy)
+
             binding.vacancyShareIcon.setOnClickListener {
                 if (vacancy.alternateUrl != null) viewModel.vacancyShare(vacancy.alternateUrl)
             }
@@ -168,6 +159,21 @@ class VacancyFragment : Fragment() {
                 viewModel.sendEmail(email = vacancy.contacts?.email.toString(), subject = "Отклик на вакнсию")
             }
         }
+    }
+
+    private fun setLogo(vacancy: VacancyDetailsModel) {
+        Glide.with(this@VacancyFragment)
+            .load(vacancy.employer?.logoUrls?.logo90)
+            .placeholder(R.drawable.ic_placeholder_30px)
+            .centerCrop()
+            .transform(
+                RoundedCorners(
+                    this@VacancyFragment.resources.getDimensionPixelSize(
+                        R.dimen.dimen_12dp
+                    )
+                )
+            )
+            .into(binding.employerLogo)
     }
 
     private fun hideGroups(vacancy: VacancyDetailsModel) {
