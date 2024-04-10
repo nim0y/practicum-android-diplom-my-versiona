@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.ui.fragments
 
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,7 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val vacancyList = binding.searchRecycleView
         adapter = adapter ?: PageVacancyAdapter { actionOnClick(it.id) }.apply {
+            Log.i("TESTSEARCH", "CreateAdapter")
             this.addLoadStateListener(viewModel::listener)
         }
 
@@ -56,6 +58,7 @@ class SearchFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.stateVacancyData.collectLatest {
+                Log.d("TESTSEARCH", "collectLatest")
                 adapter?.submitData(it)
             }
         }
@@ -128,10 +131,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun showSearchResult(found: Int) {
+        Log.e("TESTSEARCH", "showSearchResult")
         with(binding) {
             searchRecycleView.isVisible = true
             centerProgressBar.isVisible = false
-            bottomProgressBar.isVisible = false
             textUnderSearch.isVisible = false
             searchDefaultPlaceholder.isVisible = false
             noConnectionPlaceholder.isVisible = false
@@ -145,10 +148,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun showNoConnectionError(errorVariant: ErrorVariant) {
+        Log.e("TESTSEARCH", "showNoConnectionError")
         with(binding) {
             searchRecycleView.isVisible = false
             centerProgressBar.isVisible = false
-            bottomProgressBar.isVisible = false
             textUnderSearch.isVisible = false
             searchDefaultPlaceholder.isVisible = false
             noVacancyToShow.isVisible = false
@@ -179,10 +182,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun showProgress() {
+        Log.e("TESTSEARCH", "showProgress")
         with(binding) {
             searchRecycleView.isVisible = false
             centerProgressBar.isVisible = true
-            bottomProgressBar.isVisible = false
             textUnderSearch.isVisible = false
             searchDefaultPlaceholder.isVisible = false
             noVacancyToShow.isVisible = false
@@ -193,10 +196,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun showBlank(showDefaultPlaceholder: Boolean = true) {
+        Log.e("TESTSEARCH", "showBlank")
         with(binding) {
             searchRecycleView.isVisible = false
             centerProgressBar.isVisible = false
-            bottomProgressBar.isVisible = false
             textUnderSearch.isVisible = false
             searchDefaultPlaceholder.isVisible = showDefaultPlaceholder
             noVacancyToShow.isVisible = false

@@ -44,6 +44,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
         getPagingData(it)
     }
 
+
     private val searchDebounce =
         debounce<String?>(Constants.SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { query ->
             viewModelScope.launch(Dispatchers.IO) {
@@ -53,7 +54,11 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
                     setState(SearchScreenState.Loading)
                     actionStateFlow.emit(query)
                 } else if (query?.trim() == lastQuery?.trim() && query?.isNotEmpty() == true) {
-                    setState(SearchScreenState.Success(listOf(), found ?: 0))
+                    val state = _searchState.value
+                    if (state != null) {
+                        setState(SearchScreenState.Default)
+                        _searchState.postValue(state)
+                    }
                 }
             }
         }
@@ -91,7 +96,6 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
                 }
 
                 LoadState.Loading -> {
-                    setState(SearchScreenState.Loading)
                 }
 
                 is LoadState.NotLoading -> {
