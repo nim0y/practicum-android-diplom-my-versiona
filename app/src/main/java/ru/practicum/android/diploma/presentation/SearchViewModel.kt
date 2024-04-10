@@ -37,7 +37,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
     val actionStateFlow = MutableSharedFlow<String>()
     var isClickable = true
     private var found: Int? = null
-    private var lastQuery: String? = null
+    var lastQuery: String? = null
     var stateRefresh: LoadState? = null
     var errorMessage = MutableLiveData<String?>()
     val stateVacancyData = actionStateFlow.flatMapLatest {
@@ -47,11 +47,17 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
     private val searchDebounce =
         debounce<String?>(Constants.SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { query ->
             viewModelScope.launch(Dispatchers.IO) {
-                found = null
                 if (query?.isNotEmpty() == true && query != lastQuery) {
+                    found = null
                     lastQuery = query
                     setState(SearchScreenState.Loading)
                     actionStateFlow.emit(query)
+                } else if (query?.trim() == lastQuery?.trim() && query?.isNotEmpty() == true) {
+                    val state = _searchState.value
+                    if (state != null) {
+                        setState(SearchScreenState.Default)
+                        _searchState.postValue(state)
+                    }
                 }
             }
         }
@@ -76,7 +82,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
 
     fun listener(loadState: CombinedLoadStates) {
         viewModelScope.launch(Dispatchers.Main) {
-            when (val refresh = loadState.source.append) {
+            when (val refresh = loadState.source.refresh) {
                 is LoadState.Error -> when (refresh.error) {
                     is ConnectException -> _searchState.value =
                         SearchScreenState.Error(ErrorVariant.NO_CONNECTION)
@@ -89,7 +95,6 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
                 }
 
                 LoadState.Loading -> {
-                    setState(SearchScreenState.Loading)
                 }
 
                 is LoadState.NotLoading -> {
@@ -99,7 +104,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
                 }
             }
 
-            stateRefresh = loadState.source.append
+            stateRefresh = loadState.source.refresh
 
             val errorState = when {
                 loadState.source.append is LoadState.Error -> loadState.append as LoadState.Error

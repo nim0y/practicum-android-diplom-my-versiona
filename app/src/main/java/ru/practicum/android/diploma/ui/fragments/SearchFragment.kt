@@ -46,6 +46,7 @@ class SearchFragment : Fragment() {
         val vacancyList = binding.searchRecycleView
         adapter = adapter ?: PageVacancyAdapter { actionOnClick(it.id) }.apply {
             this.addLoadStateListener(viewModel::listener)
+            viewModel.lastQuery = null
         }
 
         vacancyList.adapter = adapter?.withLoadStateFooter(
@@ -131,7 +132,6 @@ class SearchFragment : Fragment() {
         with(binding) {
             searchRecycleView.isVisible = true
             centerProgressBar.isVisible = false
-            bottomProgressBar.isVisible = false
             textUnderSearch.isVisible = false
             searchDefaultPlaceholder.isVisible = false
             noConnectionPlaceholder.isVisible = false
@@ -148,7 +148,6 @@ class SearchFragment : Fragment() {
         with(binding) {
             searchRecycleView.isVisible = false
             centerProgressBar.isVisible = false
-            bottomProgressBar.isVisible = false
             textUnderSearch.isVisible = false
             searchDefaultPlaceholder.isVisible = false
             noVacancyToShow.isVisible = false
@@ -182,7 +181,6 @@ class SearchFragment : Fragment() {
         with(binding) {
             searchRecycleView.isVisible = false
             centerProgressBar.isVisible = true
-            bottomProgressBar.isVisible = false
             textUnderSearch.isVisible = false
             searchDefaultPlaceholder.isVisible = false
             noVacancyToShow.isVisible = false
@@ -196,7 +194,6 @@ class SearchFragment : Fragment() {
         with(binding) {
             searchRecycleView.isVisible = false
             centerProgressBar.isVisible = false
-            bottomProgressBar.isVisible = false
             textUnderSearch.isVisible = false
             searchDefaultPlaceholder.isVisible = showDefaultPlaceholder
             noVacancyToShow.isVisible = false

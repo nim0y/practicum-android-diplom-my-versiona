@@ -30,5 +30,7 @@ class FavoriteVacancyRepositoryImpl(
 
     override suspend fun delVacancy(vacancyId: String) {
         db.favoriteVacancyDao().deleteVacancy(vacancyId)
+        db.favoriteVacancyDao().deleteKeySkills(vacancyId)
+        db.favoriteVacancyDao().deletePhones(vacancyId)
     }
 }
