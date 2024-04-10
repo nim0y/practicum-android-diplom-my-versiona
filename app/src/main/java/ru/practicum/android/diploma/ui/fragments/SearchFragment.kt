@@ -46,7 +46,6 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val vacancyList = binding.searchRecycleView
         adapter = adapter ?: PageVacancyAdapter { actionOnClick(it.id) }.apply {
-            Log.i("TESTSEARCH", "CreateAdapter")
             this.addLoadStateListener(viewModel::listener)
             viewModel.lastQuery = null
         }
