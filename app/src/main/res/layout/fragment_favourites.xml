@@ -27,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@id/favorite_toolbar"
         tools:itemCount="10"
         tools:listitem="@layout/search_item_view"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <ImageView
         android:id="@+id/iv_empty"
@@ -49,6 +49,7 @@
         android:layout_marginTop="@dimen/dimen_16dp"
         android:gravity="center"
         android:text="@string/favorite_list_empty"
+        android:textColor="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_empty" />
@@ -73,6 +74,7 @@
         android:layout_marginTop="@dimen/dimen_16dp"
         android:gravity="center"
         android:text="@string/error_getting_vacancies"
+        android:textColor="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_error" />
@@ -90,6 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="iv_error, tv_error" />
+        app:constraint_referenced_ids="iv_error, tv_error"
+        tools:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

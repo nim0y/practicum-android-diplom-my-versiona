@@ -47,11 +47,13 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
     private val searchDebounce =
         debounce<String?>(Constants.SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { query ->
             viewModelScope.launch(Dispatchers.IO) {
-                found = null
                 if (query?.isNotEmpty() == true && query != lastQuery) {
+                    found = null
                     lastQuery = query
                     setState(SearchScreenState.Loading)
                     actionStateFlow.emit(query)
+                } else if (query?.trim() == lastQuery?.trim() && query?.isNotEmpty() == true) {
+                    setState(SearchScreenState.Success(listOf(), found ?: 0))
                 }
             }
         }
@@ -76,7 +78,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
 
     fun listener(loadState: CombinedLoadStates) {
         viewModelScope.launch(Dispatchers.Main) {
-            when (val refresh = loadState.source.append) {
+            when (val refresh = loadState.source.refresh) {
                 is LoadState.Error -> when (refresh.error) {
                     is ConnectException -> _searchState.value =
                         SearchScreenState.Error(ErrorVariant.NO_CONNECTION)
@@ -99,7 +101,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
                 }
             }
 
-            stateRefresh = loadState.source.append
+            stateRefresh = loadState.source.refresh
 
             val errorState = when {
                 loadState.source.append is LoadState.Error -> loadState.append as LoadState.Error
