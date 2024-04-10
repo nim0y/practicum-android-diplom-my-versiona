@@ -7,4 +7,5 @@ object Constants {
     const val HH_BASE_URL = "https://api.hh.ru/"
     const val NO_CONNECTION_ERROR = -1
     const val BAD_REQUEST_ERROR = 400
+    const val BUNDLE_KEY_VACANCY_ID = "vacancyId"
 }

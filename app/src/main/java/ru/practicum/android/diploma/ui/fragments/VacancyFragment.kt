@@ -22,6 +22,7 @@ import ru.practicum.android.diploma.domain.models.fields.KeySkillsModel
 import ru.practicum.android.diploma.domain.models.fields.PhonesModel
 import ru.practicum.android.diploma.presentation.VacancyViewModel
 import ru.practicum.android.diploma.ui.state.VacancyDetailsScreenState
+import ru.practicum.android.diploma.util.Constants.BUNDLE_KEY_VACANCY_ID
 import ru.practicum.android.diploma.util.ErrorVariant
 import ru.practicum.android.diploma.util.adapter.ConvertCurrency
 
@@ -48,7 +49,7 @@ class VacancyFragment : Fragment() {
         var vacancyId: String = ""
         val bundle = arguments
         if (bundle != null) {
-            vacancyId = bundle.getString("vacancyId").toString()
+            vacancyId = bundle.getString(BUNDLE_KEY_VACANCY_ID).toString()
             viewModel.fetchDetails(vacancyId)
             binding.loadingProgressBar.isVisible = false
         } else {
@@ -156,7 +157,10 @@ class VacancyFragment : Fragment() {
                 if (vacancy.alternateUrl != null) viewModel.vacancyShare(vacancy.alternateUrl)
             }
             binding.contactEmail.setOnClickListener {
-                viewModel.sendEmail(email = vacancy.contacts?.email.toString(), subject = "Отклик на вакнсию")
+                viewModel.sendEmail(
+                    email = vacancy.contacts?.email.toString(),
+                    subject = getString(R.string.email_subject)
+                )
             }
         }
     }
@@ -196,7 +200,6 @@ class VacancyFragment : Fragment() {
         binding.cardView.isVisible = true
         binding.experienceTitle.isVisible = true
         binding.scheduleEmployment.isVisible = true
-        binding.descriptionTitle.isVisible = true
         binding.descriptionTitle.isVisible = true
     }
 
