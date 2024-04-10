@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.Response
@@ -26,7 +27,6 @@ class VacancyViewModel(
     private val _uiState = MutableLiveData<VacancyDetailsScreenState>()
     val uiState: LiveData<VacancyDetailsScreenState> = _uiState
     private var vacancyCurrent: VacancyDetailsModel? = null
-
     private var isClickable = true
     private val clickDebounce =
         debounce<Boolean>(Constants.SEARCH_DEBOUNCE_DELAY, viewModelScope, false) {
@@ -64,30 +64,26 @@ class VacancyViewModel(
                 is Response.Error -> {
                     val favoriteVacancies = favoriteVacanciesState.value
                     val isVacancyFavorite = favoriteVacancies.any { it.id == id }
-                    if (isVacancyFavorite) {
+                    if (!isVacancyFavorite) {
                         _uiState.postValue(VacancyDetailsScreenState.Error(response.error))
-                    } else {
-                        getVacancyFromDb(id)
                     }
+                    getVacancyFromDb(id)
                 }
             }
         }
     }
 
     private fun getVacancyFromDb(id: String) {
-        if (id.isEmpty()) {
-            _uiState.postValue(VacancyDetailsScreenState.Error(errorVariant = ErrorVariant.NO_CONNECTION))
-        }
         viewModelScope.launch {
-            interactor.getVacancy(id).collect { vacancyFromDb ->
-                fetchVacancyFromDb(vacancyFromDb)
-            }
-        }
-    }
+            interactor.getVacancy(id)
+                .catch { exception ->
+                    _uiState.postValue(VacancyDetailsScreenState.Error(ErrorVariant.NO_CONNECTION))
+                }
+                .collect { vacancyFromDb ->
 
-    private fun fetchVacancyFromDb(vacancyFromDb: VacancyDetailsModel) {
-        vacancyCurrent = vacancyFromDb
-        _uiState.postValue(VacancyDetailsScreenState.Content(vacancyCurrent as VacancyDetailsModel))
+                    _uiState.postValue(VacancyDetailsScreenState.Content(vacancyFromDb))
+                }
+        }
     }
 
     private fun actionOnClick() {
