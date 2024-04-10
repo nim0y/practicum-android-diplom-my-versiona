@@ -20,7 +20,6 @@ class PageVacancyAdapter(
             holder.bind(vacancy)
             holder.itemView.setOnClickListener { clickItem(vacancy) }
         }
-
     }
 }
 

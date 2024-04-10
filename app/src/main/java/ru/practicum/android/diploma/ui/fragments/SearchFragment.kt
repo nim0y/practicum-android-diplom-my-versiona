@@ -48,6 +48,7 @@ class SearchFragment : Fragment() {
         adapter = adapter ?: PageVacancyAdapter { actionOnClick(it.id) }.apply {
             Log.i("TESTSEARCH", "CreateAdapter")
             this.addLoadStateListener(viewModel::listener)
+            viewModel.lastQuery = null
         }
 
         vacancyList.adapter = adapter?.withLoadStateFooter(
@@ -57,6 +58,7 @@ class SearchFragment : Fragment() {
         vacancyList.layoutManager = LinearLayoutManager(context)
 
         lifecycleScope.launch {
+            Log.d("TESTSEARCH", "Start launch")
             viewModel.stateVacancyData.collectLatest {
                 Log.d("TESTSEARCH", "collectLatest")
                 adapter?.submitData(it)

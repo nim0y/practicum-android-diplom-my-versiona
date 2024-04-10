@@ -37,13 +37,12 @@ class SearchViewModel(private val searchInteractor: SearchInteractor, private va
     val actionStateFlow = MutableSharedFlow<String>()
     var isClickable = true
     private var found: Int? = null
-    private var lastQuery: String? = null
+    var lastQuery: String? = null
     var stateRefresh: LoadState? = null
     var errorMessage = MutableLiveData<String?>()
     val stateVacancyData = actionStateFlow.flatMapLatest {
         getPagingData(it)
     }
-
 
     private val searchDebounce =
         debounce<String?>(Constants.SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { query ->
