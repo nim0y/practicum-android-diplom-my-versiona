@@ -7,13 +7,9 @@ import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
@@ -60,21 +56,17 @@ class VacancyFragment : Fragment() {
             render(state)
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.favoriteVacanciesState.collect { list ->
-                    val image = if (list.map { it.id }.contains(vacancyId)) {
-                        R.drawable.ic_favorites_on_20px
-                    } else {
-                        R.drawable.ic_favorites_off_23px
-                    }
-                    binding.vacancyFavoriteIcon.setImageResource(image)
-                }
+        viewModel.favoriteVacanciesState.observe(viewLifecycleOwner) {
+            val image = if (it) {
+                R.drawable.ic_favorites_on_20px
+            } else {
+                R.drawable.ic_favorites_off_23px
             }
+            binding.vacancyFavoriteIcon.setImageResource(image)
         }
 
         binding.vacancyFavoriteIcon.setOnClickListener {
-            viewModel.onLikeClick(vacancyId)
+            viewModel.onLikeClick()
         }
 
         binding.contactsPhone.setOnClickListener {
@@ -141,9 +133,11 @@ class VacancyFragment : Fragment() {
                 vacancy.description?.addSpacesAfterLiTags() ?: "",
                 HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM
             )
-            coreSkills.text = HtmlCompat.fromHtml(
-                getKeySkillsText(vacancy.keySkills),
-                HtmlCompat.FROM_HTML_MODE_COMPACT
+            coreSkills.setText(
+                HtmlCompat.fromHtml(
+                    getKeySkillsText(vacancy.keySkills),
+                    HtmlCompat.FROM_HTML_MODE_COMPACT
+                )
             )
             contactsName.text = vacancy.contacts?.name
             contactEmail.text = vacancy.contacts?.email

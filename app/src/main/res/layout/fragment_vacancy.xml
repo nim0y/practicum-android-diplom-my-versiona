@@ -54,7 +54,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vacancy_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/vacancy_toolbar"
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/no_connection_text"
@@ -68,7 +69,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/server_error_placeholder"
-        tools:text="@string/server_error" />
+        tools:text="@string/server_error"
+        tools:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/loading_progress_bar"
@@ -80,7 +82,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
     <ScrollView
         android:id="@+id/vacancy_details_layout"
@@ -90,7 +93,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vacancy_toolbar">
+        app:layout_constraintTop_toBottomOf="@id/vacancy_toolbar"
+        tools:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -201,6 +205,7 @@
                 android:layout_width="@dimen/zero_0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@color/red"
                 android:text="@string/no_information"
                 android:textColor="?attr/colorOnPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -224,6 +229,7 @@
                 style="@style/text_16_regular_400"
                 android:layout_width="@dimen/zero_0dp"
                 android:layout_height="wrap_content"
+                android:background="@color/red"
                 android:paddingTop="@dimen/margin_size_16"
                 android:text="@string/duties"
                 android:textColor="?attr/colorOnPrimary"
@@ -256,6 +262,7 @@
                 android:layout_width="@dimen/zero_0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16dp"
+                android:background="@color/red"
                 android:text="@string/no_information"
                 android:textColor="?attr/colorOnPrimary"
                 android:visibility="visible"

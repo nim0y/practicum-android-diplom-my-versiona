@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.Response
 import ru.practicum.android.diploma.domain.api.SearchInteractor
@@ -26,6 +25,7 @@ class VacancyViewModel(
 
     private val _uiState = MutableLiveData<VacancyDetailsScreenState>()
     val uiState: LiveData<VacancyDetailsScreenState> = _uiState
+    val favoriteVacanciesState = MutableLiveData<Boolean>()
     private var vacancyCurrent: VacancyDetailsModel? = null
     private var isClickable = true
     private val clickDebounce =
@@ -33,54 +33,50 @@ class VacancyViewModel(
             isClickable = it
         }
 
-    val favoriteVacanciesState = interactor.getListVacancy().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-
-    fun onLikeClick(vacancyId: String) {
-        if (vacancyId == vacancyCurrent?.id) {
-            val vacancy = vacancyCurrent
-            viewModelScope.launch {
-                if (favoriteVacanciesState.value.contains(vacancy)) {
-                    interactor.delVacancy(vacancy!!.id)
-                } else {
-                    interactor.addVacancy(vacancy!!)
-                }
-                actionOnClick()
+    fun onLikeClick() {
+        vacancyCurrent ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            if (favoriteVacanciesState.value == true) {
+                interactor.delVacancy(vacancyCurrent!!.id)
+            } else {
+                interactor.addVacancy(vacancyCurrent!!)
             }
-        } else {
-            return
+            favoriteVacanciesState.postValue(favoriteVacanciesState.value?.not())
+            actionOnClick()
         }
     }
 
     fun fetchDetails(id: String) {
         _uiState.value = VacancyDetailsScreenState.Loading
-        viewModelScope.launch {
-            val response = searchInteractor.getCurrentVacancyDetails(id)
-            when (response) {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val response = searchInteractor.getCurrentVacancyDetails(id)) {
                 is Response.Success -> {
                     _uiState.postValue(VacancyDetailsScreenState.Content(response.data))
                     vacancyCurrent = response.data
+                    interactor.getVacancy(response.data.id)
+                        .catch { favoriteVacanciesState.postValue(false) }
+                        .collect {
+                            favoriteVacanciesState.postValue(true)
+                        }
                 }
 
                 is Response.Error -> {
-                    val favoriteVacancies = favoriteVacanciesState.value
-                    val isVacancyFavorite = favoriteVacancies.any { it.id == id }
-                    if (!isVacancyFavorite) {
-                        _uiState.postValue(VacancyDetailsScreenState.Error(response.error))
-                    }
-                    getVacancyFromDb(id)
+                    getVacancyFromDb(id, response.error)
                 }
             }
         }
     }
 
-    private fun getVacancyFromDb(id: String) {
-        viewModelScope.launch {
+    private fun getVacancyFromDb(id: String, error: ErrorVariant?) {
+        viewModelScope.launch(Dispatchers.IO) {
             interactor.getVacancy(id)
                 .catch { exception ->
-                    _uiState.postValue(VacancyDetailsScreenState.Error(ErrorVariant.NO_CONNECTION))
+                    favoriteVacanciesState.postValue(false)
+                    _uiState.postValue(VacancyDetailsScreenState.Error(error ?: ErrorVariant.NO_CONNECTION))
                 }
                 .collect { vacancyFromDb ->
-
+                    vacancyCurrent = vacancyFromDb
+                    favoriteVacanciesState.postValue(true)
                     _uiState.postValue(VacancyDetailsScreenState.Content(vacancyFromDb))
                 }
         }
