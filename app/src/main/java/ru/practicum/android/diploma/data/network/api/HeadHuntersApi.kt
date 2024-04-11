@@ -35,5 +35,3 @@ interface HeadHuntersApi {
     @GET("industries")
     suspend fun loadFilterIndustry(): List<IndustryDto>
 }
-
-
