@@ -222,5 +222,8 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         hideKeyboard(binding.searchQuery)
+        binding.filterIc.setOnClickListener {
+            findNavController().navigate(R.id.filterFragment)
+        }
     }
 }
