@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.presentation.SearchViewModel
 import ru.practicum.android.diploma.presentation.VacancyViewModel
 
 val viewModelModule = module {
-    viewModel { SearchViewModel(get(), androidContext()) }
+    viewModel { SearchViewModel(get(), androidContext(), get()) }
     viewModel { FavouritesViewModel(get()) }
     viewModel { VacancyViewModel(get(), get(), get()) }
 }

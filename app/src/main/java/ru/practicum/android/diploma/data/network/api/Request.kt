@@ -10,4 +10,8 @@ sealed interface Request {
     data class SimilarVacanciesRequest(val id: String) : Request
 
     data class CurrentVacancyDetails(val id: String) : Request
+
+    data class LoadAreas(val areaId: String?) : Request
+
+    data object LoadIndustry : Request
 }
