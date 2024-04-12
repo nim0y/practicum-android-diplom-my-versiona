@@ -35,4 +35,11 @@
     <string name="phone_title">Телефон</string>
     <string name="comment_title">Комментарий</string>
     <string name="email_subject">Отклик на вакансию</string>
+    <string name="filter_settings_title">Настройки фильтрации</string>
+    <string name="work_place">Место работы</string>
+    <string name="industry">Отрасль</string>
+    <string name="salary_expectation">Ожидаемая зарплата</string>
+    <string name="show_only_with_salary">Не показывать без зарплаты</string>
+    <string name="Apply">Применить</string>
+    <string name="cancel">Сбросить</string>
 </resources>
