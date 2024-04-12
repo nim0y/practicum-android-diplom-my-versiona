@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.Response
 import ru.practicum.android.diploma.domain.api.SearchInteractor
+import ru.practicum.android.diploma.domain.interactors.FiltersInteractor
 import ru.practicum.android.diploma.domain.models.SearchResponseModel
 import ru.practicum.android.diploma.domain.models.VacancyModel
 import ru.practicum.android.diploma.ui.state.SearchScreenState
@@ -30,7 +31,11 @@ import ru.practicum.android.diploma.util.adapter.ServerError
 import ru.practicum.android.diploma.util.debounce
 import java.net.ConnectException
 
-class SearchViewModel(private val searchInteractor: SearchInteractor, private val context: Context) : ViewModel() {
+class SearchViewModel(
+    private val searchInteractor: SearchInteractor,
+    private val context: Context,
+    private val filterInteractor: FiltersInteractor
+) : ViewModel() {
     val sizeLoadPage = 1
     private val _searchState = MutableLiveData<SearchScreenState>()
     val searchState: LiveData<SearchScreenState> = _searchState

@@ -50,10 +50,10 @@ class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRep
             Response.Error(getErrorType(response.resultCode))
         }
     }
+}
 
-    private fun getErrorType(code: Int): ErrorVariant = when {
-        code == NO_CONNECTION_ERROR -> ErrorVariant.NO_CONNECTION
-        code >= BAD_REQUEST_ERROR -> ErrorVariant.BAD_REQUEST
-        else -> ErrorVariant.BAD_REQUEST
-    }
+fun getErrorType(code: Int): ErrorVariant = when {
+    code == NO_CONNECTION_ERROR -> ErrorVariant.NO_CONNECTION
+    code >= BAD_REQUEST_ERROR -> ErrorVariant.BAD_REQUEST
+    else -> ErrorVariant.BAD_REQUEST
 }
