@@ -92,7 +92,12 @@ class FilterFragment : Fragment() {
             setOnClickListener { clearWorkPlace() }
         }
         binding.workPlaceLayout.apply {
-            setEndIconDrawable(if (country.isNullOrEmpty()) R.drawable.ic_arrow_forward_14px else R.drawable.ic_close_cross_14px)
+            setEndIconDrawable(
+                if (country.isNullOrEmpty())
+                    R.drawable.ic_arrow_forward_14px
+                else
+                    R.drawable.ic_close_cross_14px
+            )
         }
         val place = country + if (!region.isNullOrEmpty()) {
             getString(R.string.separator) + region
@@ -108,7 +113,12 @@ class FilterFragment : Fragment() {
             setOnClickListener { clearIndustry() }
         }
         binding.industryLayout.apply {
-            setEndIconDrawable(if (industry.isNullOrEmpty()) R.drawable.ic_arrow_forward_14px else R.drawable.ic_close_cross_14px)
+            setEndIconDrawable(
+                if (industry.isNullOrEmpty())
+                    R.drawable.ic_arrow_forward_14px
+                else
+                    R.drawable.ic_close_cross_14px
+            )
         }
     }
 
