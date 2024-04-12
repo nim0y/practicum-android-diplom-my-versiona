@@ -42,4 +42,5 @@
     <string name="show_only_with_salary">Не показывать без зарплаты</string>
     <string name="Apply">Применить</string>
     <string name="cancel">Сбросить</string>
+    <string name="separator">, </string>
 </resources>
