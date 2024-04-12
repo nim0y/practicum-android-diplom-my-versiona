@@ -93,10 +93,11 @@ class FilterFragment : Fragment() {
         }
         binding.workPlaceLayout.apply {
             setEndIconDrawable(
-                if (country.isNullOrEmpty())
+                if (country.isNullOrEmpty()) {
                     R.drawable.ic_arrow_forward_14px
-                else
+                } else {
                     R.drawable.ic_close_cross_14px
+                }
             )
         }
         val place = country + if (!region.isNullOrEmpty()) {
@@ -114,10 +115,11 @@ class FilterFragment : Fragment() {
         }
         binding.industryLayout.apply {
             setEndIconDrawable(
-                if (industry.isNullOrEmpty())
+                if (industry.isNullOrEmpty()) {
                     R.drawable.ic_arrow_forward_14px
-                else
+                } else {
                     R.drawable.ic_close_cross_14px
+                }
             )
         }
     }
