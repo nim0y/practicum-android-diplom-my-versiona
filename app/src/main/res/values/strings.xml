@@ -2,6 +2,8 @@
     <string name="app_name">Practicum-Android-Diploma</string>
     <string name="main_screen_title">Главная</string>
     <string name="favorite_screen_title">Избранное</string>
+    <string name="favorite_list_empty">Список пуст</string>
+    <string name="error_getting_vacancies">Не удалось получить список вакансий</string>
     <string name="team_screen_title">Команда</string>
     <string name="title_team">Над приложением работали</string>
     <string name="name1">Александр Щербаков</string>
@@ -9,4 +11,28 @@
     <string name="name3">Михаил Хенкин</string>
     <string name="name4">Фёдор Жамойда</string>
     <string name="search">Поиск</string>
+    <string name="vacancy_search_title">Поиск вакансий</string>
+    <string name="no_connection">Нет интернета</string>
+    <string name="no_vacancy_list">Не удалось получить\n список вакансий</string>
+    <string name="search_hint">Введите запрос</string>
+    <string name="no_salary_info">Зарплата не указана</string>
+    <string name="from">от</string>
+    <string name="to">до</string>
+    <string name="filter_icon_description">filter_icon_description</string>
+    <string name="there_no_such_vacancies">Таких вакансий нет</string>
+    <string name="server_error">Ошибка сервера</string>
+    <string name="vacancy_toolbar">Вакансия</string>
+    <string name="no_information">Нет информации</string>
+    <string name="experience_title">Требуемый опыт</string>
+    <string name="vacancy_description_title">Описание вакансии</string>
+    <string name="duties">Обязанности</string>
+    <string name="demands">Требования</string>
+    <string name="conditions">Условия</string>
+    <string name="core_skills_title">Ключевые навыки</string>
+    <string name="contacts_title">Контакты</string>
+    <string name="contact_person">Контактное лицо</string>
+    <string name="email_title">E-mail</string>
+    <string name="phone_title">Телефон</string>
+    <string name="comment_title">Комментарий</string>
+    <string name="email_subject">Отклик на вакансию</string>
 </resources>
