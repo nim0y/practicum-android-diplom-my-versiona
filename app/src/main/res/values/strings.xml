@@ -43,4 +43,6 @@
     <string name="Apply">Применить</string>
     <string name="cancel">Сбросить</string>
     <string name="separator">, </string>
+    <string name="industry_header">Выбор отрасли</string>
+    <string name="industry_edit_text_hint">Введите отрасль</string>
 </resources>
