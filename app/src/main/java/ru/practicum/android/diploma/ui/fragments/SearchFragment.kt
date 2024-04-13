@@ -79,6 +79,10 @@ class SearchFragment : Fragment() {
             viewModel.onSearchQueryChange(query.toString())
         }
 
+        settingListener()
+    }
+
+    fun settingListener() {
         binding.searchQuery.setOnEditorActionListener { v, actionId, event ->
             val isEnterKeyPressed = actionId == EditorInfo.IME_ACTION_DONE ||
                 event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER
