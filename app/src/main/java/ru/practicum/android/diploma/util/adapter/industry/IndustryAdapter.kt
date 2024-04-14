@@ -31,15 +31,15 @@ class IndustryAdapter(private val onClick: (IndustryAdapterItem) -> Unit) : Recy
     }
 
     private fun updateSelectedIndustry(position: Int) {
-        checkedRadioButtonId = position
-        data[position].selected = true
-        onClick.invoke(data[position])
-        notifyItemChanged(position)
-        val oldPosition = data.indexOfFirst { it != data[position] && it.selected }
-        if (oldPosition > -1) {
-            data[oldPosition].selected = false
-            notifyItemChanged(oldPosition)
+        val updatedData = data.mapIndexed { index, item ->
+            IndustryAdapterItem(item.industry, index == position)
         }
+        val diffCallback = IndustryDiffCallback(data, updatedData)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        data = updatedData
+        checkedRadioButtonId = position
+        onClick.invoke(data[position])
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun updateList(newList: List<IndustryAdapterItem>) {
@@ -52,14 +52,19 @@ class IndustryAdapter(private val onClick: (IndustryAdapterItem) -> Unit) : Recy
     fun setSelectedIndustry(industryId: String?) {
         val position = data.indexOfFirst { it.industry.id == industryId }
         if (position != -1) {
-            data[position].selected = true
+            val updatedData = data.mapIndexed { index, item ->
+                IndustryAdapterItem(item.industry, index == position)
+            }
+            val diffCallback = IndustryDiffCallback(data, updatedData)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+            data = updatedData
             checkedRadioButtonId = position
-            notifyItemChanged(position)
+            diffResult.dispatchUpdatesTo(this)
         }
     }
 }
 
 data class IndustryAdapterItem(
     val industry: SubIndustry,
-    var selected: Boolean = false
+    val selected: Boolean = false
 )

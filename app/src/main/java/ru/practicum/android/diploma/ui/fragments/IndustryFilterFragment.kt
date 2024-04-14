@@ -30,7 +30,6 @@ class IndustryFilterFragment : Fragment() {
         currentIndustry = industry.industry
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,7 +66,6 @@ class IndustryFilterFragment : Fragment() {
                 is IndustryFilterState.Success -> showContent(data = state.data)
             }
         }
-
     }
 
     private fun updateUIBasedOnText(text: CharSequence?) {
@@ -91,13 +89,16 @@ class IndustryFilterFragment : Fragment() {
         binding.placeholderGroup.isVisible = false
         binding.applyButton.isVisible = false
         binding.industryRecycleView.isVisible = true
-        val active = data.find { it.industry.id == currentIndustry?.id }
-        active?.let {
-            it.selected = true
+        val activeIndex = data.indexOfFirst { it.industry.id == currentIndustry?.id }
+        val updatedData = data.mapIndexed { index, item ->
+            IndustryAdapterItem(item.industry, index == activeIndex)
+        }
+        adapter.updateList(updatedData)
+        if (activeIndex != -1) {
             binding.applyButton.isVisible = true
-        } ?: { binding.applyButton.isVisible = false }
-        adapter.updateList(data)
-        handleIndustrySelection(data)
+            currentIndustry = updatedData[activeIndex].industry
+        }
+        handleIndustrySelection(updatedData)
     }
 
     private fun handleIndustrySelection(data: List<IndustryAdapterItem>) {
