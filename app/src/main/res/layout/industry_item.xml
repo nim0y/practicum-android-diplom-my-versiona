@@ -13,12 +13,17 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/text_16_regular_400"
         android:textColor="?attr/colorOnPrimary"
+        android:paddingStart="@dimen/zero_0dp"
+        android:paddingEnd="@dimen/dimen_56dp"
+        app:layout_constraintEnd_toStartOf="@id/round_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         tools:text="Аквааэробика" />
 
     <RadioButton
+        android:id="@+id/round_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
