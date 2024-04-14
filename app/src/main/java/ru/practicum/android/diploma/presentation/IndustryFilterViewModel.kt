@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +11,6 @@ import ru.practicum.android.diploma.domain.models.filters.Industry
 import ru.practicum.android.diploma.domain.models.filters.SubIndustry
 import ru.practicum.android.diploma.ui.state.IndustryFilterState
 import ru.practicum.android.diploma.util.adapter.industry.IndustryAdapterItem
-
 
 class IndustryFilterViewModel(private val filtersInteractor: FiltersInteractor) : ViewModel() {
     private val _industryState = MutableLiveData<IndustryFilterState>()
