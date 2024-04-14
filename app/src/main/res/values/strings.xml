@@ -45,4 +45,5 @@
     <string name="separator">, </string>
     <string name="industry_header">Выбор отрасли</string>
     <string name="industry_edit_text_hint">Введите отрасль</string>
+    <string name="no_such_industry">Такой отрасли нет</string>
 </resources>
