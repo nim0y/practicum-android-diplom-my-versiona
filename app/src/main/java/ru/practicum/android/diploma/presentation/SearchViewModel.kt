@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,6 +22,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.Response
 import ru.practicum.android.diploma.domain.api.SearchInteractor
 import ru.practicum.android.diploma.domain.interactors.FiltersInteractor
+import ru.practicum.android.diploma.domain.models.MessageData
 import ru.practicum.android.diploma.domain.models.SearchResponseModel
 import ru.practicum.android.diploma.domain.models.VacancyModel
 import ru.practicum.android.diploma.ui.state.SearchScreenState
@@ -33,18 +35,18 @@ import java.net.ConnectException
 
 class SearchViewModel(
     private val searchInteractor: SearchInteractor,
-    private val context: Context,
     private val filterInteractor: FiltersInteractor
 ) : ViewModel() {
     val sizeLoadPage = 1
     private val _searchState = MutableLiveData<SearchScreenState>()
-    val searchState: LiveData<SearchScreenState> = _searchState
+     val searchState: LiveData<SearchScreenState> = _searchState
     val actionStateFlow = MutableSharedFlow<String>()
     var isClickable = true
     private var found: Int? = null
     var lastQuery: String? = null
-    var stateRefresh: LoadState? = null
-    var errorMessage = MutableLiveData<String?>()
+    private var stateRefresh: LoadState? = null
+    private var _errorMessage = MutableLiveData<MessageData?>()
+    var errorMessage :LiveData<MessageData?> =_errorMessage
     val stateVacancyData = actionStateFlow.flatMapLatest {
         getPagingData(it)
     }
@@ -52,13 +54,13 @@ class SearchViewModel(
     private val searchDebounce =
         debounce<String?>(Constants.SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { query ->
             viewModelScope.launch(Dispatchers.IO) {
-                if (query?.isNotEmpty() == true && query != lastQuery) {
+                val state = _searchState.value
+                if (query?.isNotEmpty() == true && (query != lastQuery || state is SearchScreenState.Error)) {
                     found = null
                     lastQuery = query
                     setState(SearchScreenState.Loading)
                     actionStateFlow.emit(query)
                 } else if (query?.trim() == lastQuery?.trim() && query?.isNotEmpty() == true) {
-                    val state = _searchState.value
                     if (state != null) {
                         setState(SearchScreenState.Default)
                         _searchState.postValue(state)
@@ -117,7 +119,7 @@ class SearchViewModel(
                 else -> null
             }
             when (errorState?.error) {
-                is ConnectException -> errorMessage.value = context.getString(R.string.no_connection)
+                is ConnectException -> _errorMessage.value = MessageData(R.string.no_connection)
             }
         }
     }
@@ -138,6 +140,6 @@ class SearchViewModel(
     }
 
     fun clearMessage() {
-        errorMessage.value = null
+       _errorMessage.value = null
     }
 }
