@@ -53,13 +53,13 @@ class SearchViewModel(
     val stateVacancyData = actionStateFlow.flatMapLatest {
         getPagingData(it)
     }
-    lateinit var filtersSetting: FiltersSettings
+    var filtersSetting: FiltersSettings? = null
     val stateFilters = MutableStateFlow(false)
 
     init {
         jobFilter = viewModelScope.launch(Dispatchers.IO) {
             filtersSetting = filterInteractor.getPrefs()
-            stateFilters.value = filtersSetting.checkEmpty()
+            stateFilters.value = filtersSetting?.checkEmpty() ?: false
         }
     }
 
@@ -69,7 +69,7 @@ class SearchViewModel(
                 val newFilters = filterInteractor.getPrefs()
                 if (newFilters != filtersSetting) {
                     filtersSetting = newFilters
-                    stateFilters.value = filtersSetting.checkEmpty()
+                    stateFilters.value = filtersSetting?.checkEmpty() ?: false
                     if (lastQuery?.isNotEmpty() == true) {
                         actionStateFlow.emit(lastQuery!!)
                     }
