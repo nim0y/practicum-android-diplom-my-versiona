@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -118,6 +119,27 @@ class SearchFragment : Fragment() {
         }
         binding.filterIc.setOnClickListener {
             findNavController().navigate(R.id.filterFragment)
+        }
+        lifecycleScope.launch {
+            viewModel.stateFilters.collect {
+                if (context != null) {
+                    if (!it) {
+                        binding.filterIc.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_filter_on_24px
+                            )
+                        )
+                    } else {
+                        binding.filterIc.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_filter12px
+                            )
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -240,5 +262,6 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         hideKeyboard(binding.searchQuery)
+        viewModel.checkChangeFilter()
     }
 }

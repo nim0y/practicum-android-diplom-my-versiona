@@ -10,7 +10,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -23,6 +25,8 @@ import ru.practicum.android.diploma.domain.interactors.FiltersInteractor
 import ru.practicum.android.diploma.domain.models.MessageData
 import ru.practicum.android.diploma.domain.models.SearchResponseModel
 import ru.practicum.android.diploma.domain.models.VacancyModel
+import ru.practicum.android.diploma.domain.models.filters.FiltersSettings
+import ru.practicum.android.diploma.domain.models.filters.checkEmpty
 import ru.practicum.android.diploma.ui.state.SearchScreenState
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.ErrorVariant
@@ -36,6 +40,7 @@ class SearchViewModel(
     private val filterInteractor: FiltersInteractor
 ) : ViewModel() {
     val sizeLoadPage = 1
+    var jobFilter: Job? = null
     private val _searchState = MutableLiveData<SearchScreenState>()
     val searchState: LiveData<SearchScreenState> = _searchState
     val actionStateFlow = MutableSharedFlow<String>()
@@ -47,6 +52,30 @@ class SearchViewModel(
     var errorMessage: LiveData<MessageData?> = _errorMessage
     val stateVacancyData = actionStateFlow.flatMapLatest {
         getPagingData(it)
+    }
+    lateinit var filtersSetting: FiltersSettings
+    val stateFilters = MutableStateFlow(false)
+
+    init {
+        jobFilter = viewModelScope.launch(Dispatchers.IO) {
+            filtersSetting = filterInteractor.getPrefs()
+            stateFilters.value = filtersSetting.checkEmpty()
+        }
+    }
+
+    fun checkChangeFilter() {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (jobFilter?.isActive != true) {
+                val newFilters = filterInteractor.getPrefs()
+                if (newFilters != filtersSetting) {
+                    filtersSetting = newFilters
+                    stateFilters.value = filtersSetting.checkEmpty()
+                    if (lastQuery?.isNotEmpty() == true) {
+                        actionStateFlow.emit(lastQuery!!)
+                    }
+                }
+            }
+        }
     }
 
     private val searchDebounce =
