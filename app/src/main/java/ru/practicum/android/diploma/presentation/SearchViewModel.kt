@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.presentation
 
-import android.app.Application
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,14 +37,14 @@ class SearchViewModel(
 ) : ViewModel() {
     val sizeLoadPage = 1
     private val _searchState = MutableLiveData<SearchScreenState>()
-     val searchState: LiveData<SearchScreenState> = _searchState
+    val searchState: LiveData<SearchScreenState> = _searchState
     val actionStateFlow = MutableSharedFlow<String>()
     var isClickable = true
     private var found: Int? = null
     var lastQuery: String? = null
     private var stateRefresh: LoadState? = null
     private var _errorMessage = MutableLiveData<MessageData?>()
-    var errorMessage :LiveData<MessageData?> =_errorMessage
+    var errorMessage: LiveData<MessageData?> = _errorMessage
     val stateVacancyData = actionStateFlow.flatMapLatest {
         getPagingData(it)
     }
@@ -140,6 +138,6 @@ class SearchViewModel(
     }
 
     fun clearMessage() {
-       _errorMessage.value = null
+        _errorMessage.value = null
     }
 }
