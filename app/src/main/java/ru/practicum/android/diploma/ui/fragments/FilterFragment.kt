@@ -75,6 +75,9 @@ class FilterFragment : Fragment() {
                 )
             )
         }
+        binding.workPlaceLayout.setOnClickListener {
+            findNavController().navigate(R.id.choose_place_of_work)
+        }
 
     }
 

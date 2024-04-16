@@ -13,7 +13,7 @@
         android:layout_height="@dimen/toolbar_height_64dp"
         app:buttonGravity="center_vertical"
         app:navigationIcon="@drawable/ic_arrow_back_16px"
-        app:title="@string/filter_settings_title" />
+        app:title="@string/choose_country" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
