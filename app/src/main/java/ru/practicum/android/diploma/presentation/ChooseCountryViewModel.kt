@@ -37,6 +37,6 @@ class ChooseCountryViewModel(
     }
 
     fun onItemClick(item: AreaModel) {
-        prefsManager.save("Area", item)
+        prefsManager.save("Country", item)
     }
 }

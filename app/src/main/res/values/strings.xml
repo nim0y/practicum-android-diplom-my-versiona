@@ -50,4 +50,5 @@
     <string name="choose">Выбрать</string>
     <string name="choose_country">Выбор страны</string>
     <string name="choose_place_of_work">Выбор места работы</string>
+    <string name="region">Регион</string>
 </resources>

@@ -17,4 +17,8 @@ class PrefsManager(private val sharedPrefs: SharedPreferences) {
         Log.d("AAA", "Prefs $res")
         return res
     }
+
+    fun delete(key: String) {
+        sharedPrefs.edit().remove(key).apply()
+    }
 }

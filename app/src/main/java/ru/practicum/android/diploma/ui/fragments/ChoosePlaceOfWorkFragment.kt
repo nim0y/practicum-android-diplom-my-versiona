@@ -7,7 +7,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentChoosePlaceOfWorkBinding
@@ -27,24 +32,38 @@ class ChoosePlaceOfWorkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val country = viewModel.fetchCountry()
-        if (country == null) {
-            binding.countryEmpty.isVisible = true
-            binding.countryBottom.isVisible = false
-            binding.countryTop.isVisible = false
-        } else {
-            binding.countryEmpty.isVisible = false
-            binding.countryBottom.isVisible = true
-            binding.countryTop.isVisible = true
-            binding.countryTop.setText(R.string.country)
-            binding.countryBottom.text = country.name
+        viewModel.fetchCountry()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.countryState.collect { country ->
+                    if (country == null) {
+                        binding.countryEmpty.isVisible = true
+                        binding.countryBottom.isVisible = false
+                        binding.countryTop.isVisible = false
+                        binding.countryNext.isVisible = true
+                        binding.countryRemove.isVisible = false
+                        binding.chooseButton.isVisible = false
+                    } else {
+                        binding.countryEmpty.isVisible = false
+                        binding.countryBottom.isVisible = true
+                        binding.countryTop.isVisible = true
+                        binding.countryBottom.text = country.name
+                        binding.countryNext.isVisible = false
+                        binding.countryRemove.isVisible = true
+                        binding.chooseButton.isVisible = true
+                    }
+                }
+            }
         }
+
+        binding.countryRemove.setOnClickListener { viewModel.removeCountry() }
 
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
 
-        binding.countryButton.setOnClickListener {
+        binding.countryClick.setOnClickListener {
             findNavController().navigate(R.id.choose_country)
         }
     }

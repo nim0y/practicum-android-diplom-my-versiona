@@ -16,6 +16,7 @@
         app:title="@string/choose_place_of_work" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/countryClick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="6dp"
@@ -37,7 +38,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Страна" />
+            android:text="@string/country" />
 
         <TextView
             android:id="@+id/countryBottom"
@@ -49,7 +50,7 @@
             tools:text="Russia" />
 
         <ImageView
-            android:id="@+id/countryButton"
+            android:id="@+id/countryNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="17dp"
@@ -58,9 +59,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/countryRemove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_krest"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/regionClick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="6dp"
@@ -71,7 +83,7 @@
             android:id="@+id/regionEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/country"
+            android:text="@string/region"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -80,25 +92,37 @@
             android:id="@+id/regionTop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Страна" />
+            android:text="@string/region" />
 
         <TextView
             android:id="@+id/regionBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/regionTop"
             tools:text="Russia" />
 
         <ImageView
-            android:id="@+id/regionButton"
+            android:id="@+id/regionNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="17dp"
             android:src="@drawable/ic_arrow_forward_14px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/regionRemove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_krest"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
