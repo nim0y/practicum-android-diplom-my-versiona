@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ChooseCountryItemBinding
 import ru.practicum.android.diploma.domain.models.fields.AreaModel
 
-class CountryAdapter(private val onClick: (AreaModel) -> Unit): RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() {
+class CountryAdapter(private val onClick: (AreaModel) -> Unit) :
+    RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() {
 
     private var data = emptyList<AreaModel>()
 
-    inner class CountryViewHolder(private val binding: ChooseCountryItemBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class CountryViewHolder(private val binding: ChooseCountryItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: AreaModel) {
             binding.text.text = item.name
             binding.root.setOnClickListener { onClick.invoke(item) }

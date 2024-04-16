@@ -7,4 +7,4 @@ data class AreaModel(
     val name: String?,
     val countryId: String?,
     val areas: List<AreaModel>?
-): Serializable
+) : Serializable

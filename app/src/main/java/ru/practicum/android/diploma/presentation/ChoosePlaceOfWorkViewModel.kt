@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.domain.models.fields.AreaModel
 
 class ChoosePlaceOfWorkViewModel(
     private val prefsManager: PrefsManager
-): ViewModel() {
+) : ViewModel() {
 
     private val _countryState = MutableStateFlow<AreaModel?>(null)
     val countryState = _countryState.asStateFlow()

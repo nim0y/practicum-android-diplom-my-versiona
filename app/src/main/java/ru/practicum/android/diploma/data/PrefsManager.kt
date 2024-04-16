@@ -12,7 +12,7 @@ class PrefsManager(private val sharedPrefs: SharedPreferences) {
         sharedPrefs.edit().putString(key, gson.toJson(value)).apply()
     }
 
-    fun <T: Any> get(key: String, clazz: Class<T>): T? {
+    fun <T : Any> get(key: String, clazz: Class<T>): T? {
         val res = gson.fromJson(sharedPrefs.getString(key, ""), clazz)
         Log.d("AAA", "Prefs $res")
         return res

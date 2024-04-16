@@ -12,6 +12,8 @@
     <TextView
         android:layout_width="0dp"
         android:layout_weight="1"
+        style="@style/text_16_regular_400"
+        android:textColor="@color/black"
         tools:text="Russia"
         android:layout_height="wrap_content"
         android:id="@+id/text"/>
