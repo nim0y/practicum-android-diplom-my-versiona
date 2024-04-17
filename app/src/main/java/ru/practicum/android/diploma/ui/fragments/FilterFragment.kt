@@ -44,7 +44,6 @@ class FilterFragment : Fragment() {
                 initFilterSettings(it.filters)
                 applyButtonVisibility(it.showApply)
                 clearButtonVisibility(it.showClear)
-                clearButtonSalaryVisibility()
             }
         }
 
@@ -60,7 +59,7 @@ class FilterFragment : Fragment() {
     }
 
     private fun initButtonListeners() {
-        binding.filterToolbar.setNavigationOnClickListener { saveAndNavigateUp() }
+        binding.filterToolbar.setNavigationOnClickListener { findNavController().navigateUp() }
         binding.applyButton.setOnClickListener { saveAndNavigateUp() }
         binding.clearButton.setOnClickListener { clearFilters() }
         binding.salaryFlagCheckbox.setOnCheckedChangeListener { _, isChecked ->
@@ -144,7 +143,7 @@ class FilterFragment : Fragment() {
         binding.industryLayout.apply {
             setEndIconDrawable(
                 if (industry.isNullOrEmpty()) {
-                    setEndIconOnClickListener {
+                    setOnClickListener {
                         findNavController().navigate(R.id.action_filterFragment_to_industry_filer_screen)
                     }
                     R.drawable.ic_arrow_forward_14px
@@ -209,9 +208,5 @@ class FilterFragment : Fragment() {
 
     private fun clearButtonVisibility(visible: Boolean) {
         binding.clearButton.isVisible = visible
-    }
-
-    private fun clearButtonSalaryVisibility() {
-        binding.clearButton.isVisible = binding.salary.text?.isEmpty() == false
     }
 }
