@@ -142,6 +142,7 @@
         <item name="android:imeOptions">actionDone</item>
         <item name="android:inputType">number</item>
         <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="white_16_medium">

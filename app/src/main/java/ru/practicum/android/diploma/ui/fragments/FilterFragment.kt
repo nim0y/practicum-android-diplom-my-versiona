@@ -1,9 +1,14 @@
 package ru.practicum.android.diploma.ui.fragments
 
+import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -22,6 +27,7 @@ import ru.practicum.android.diploma.domain.models.filters.Area
 import ru.practicum.android.diploma.domain.models.filters.FiltersSettings
 import ru.practicum.android.diploma.domain.models.filters.SubIndustry
 import ru.practicum.android.diploma.presentation.FilterViewModel
+
 
 class FilterFragment : Fragment() {
     private var _binding: FragmentFilterBinding? = null
@@ -85,13 +91,36 @@ class FilterFragment : Fragment() {
             viewModel.setExpectedSalary(text?.toString())
             if (text.isNullOrEmpty()) {
                 binding.salaryLayout.endIconMode = TextInputLayout.END_ICON_NONE
+                binding.salaryLayout.defaultHintTextColor = ColorStateList.valueOf(Color.RED)
+                if (binding.salary.isFocused) {
+                    binding.salaryLayout.defaultHintTextColor =
+                        ColorStateList.valueOf(requireContext().getColor(R.color.light_blue))
+                } else {
+                    binding.salaryLayout.defaultHintTextColor =
+                        ColorStateList.valueOf(requireContext().getColorOnSecondaryFixed())
+                }
             } else {
+                if (binding.salary.isFocused) {
+                    binding.salaryLayout.defaultHintTextColor =
+                        ColorStateList.valueOf(requireContext().getColor(R.color.light_blue))
+                } else {
+                    binding.salaryLayout.defaultHintTextColor =
+                        ColorStateList.valueOf(requireContext().getColor(R.color.black))
+                }
                 binding.salaryLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
                 binding.salaryLayout.setEndIconOnClickListener {
                     binding.salary.setText("")
                 }
             }
         }
+    }
+
+    @ColorInt
+    fun Context.getColorOnSecondaryFixed(): Int {
+        val typedValue = TypedValue()
+        val theme = theme
+        theme.resolveAttribute(com.google.android.material.R.attr.colorOnSecondaryFixed, typedValue, true)
+        return typedValue.data
     }
 
     fun navigateToPlaceOfWork() {

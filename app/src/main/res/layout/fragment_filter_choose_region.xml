@@ -47,6 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:textColorHint="?attr/colorOnSecondary"
             app:boxBackgroundColor="#00000000"
             app:boxBackgroundMode="filled"
             app:boxStrokeWidth="0dp"
@@ -54,12 +55,12 @@
             app:cornerRadius="12dp"
             app:cursorColor="@color/blue"
             app:expandedHintEnabled="false"
-            android:textColorHint="?attr/colorOnSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_text_view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:placeholderText="@string/enter_region">
+            app:placeholderText="@string/enter_region"
+            app:placeholderTextColor="?attr/colorControlNormal">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/choosing_region"
