@@ -41,6 +41,7 @@
             android:paddingEnd="@dimen/dimen_8dp"
             android:paddingBottom="@dimen/dimen_4dp"
             android:singleLine="true"
+            android:imeOptions="actionDone"
             android:textCursorDrawable="@drawable/ic_edit_text_cursor" />
 
         <ImageView
