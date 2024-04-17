@@ -18,6 +18,7 @@ import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.domain.models.filters.Area
 import ru.practicum.android.diploma.domain.models.filters.FiltersSettings
 import ru.practicum.android.diploma.domain.models.filters.SubIndustry
 import ru.practicum.android.diploma.presentation.FilterViewModel
@@ -66,18 +67,17 @@ class FilterFragment : Fragment() {
             viewModel.setSalaryOnlyCheckbox(isChecked)
         }
         binding.industryTextInput.setOnClickListener {
-            val industryIdPrefs = viewModel.getIndustryId()
-            findNavController().navigate(
-                R.id.action_filterFragment_to_industry_filer_screen,
-                bundleOf(
-                    IndustryFilterFragment.INDUSTRY_KEY_ID to industryIdPrefs
-                )
-            )
+            navigateToIndustry()
+        }
+        binding.industryLayout.setOnClickListener {
+            navigateToIndustry()
         }
         binding.workPlaceLayout.setOnClickListener {
-            findNavController().navigate(R.id.action_filterFragment_to_filtersPlaceOfWorkFragment)
+            navigateToPlaceOfWork()
         }
-
+        binding.workTextInput.setOnClickListener {
+            navigateToPlaceOfWork()
+        }
     }
 
     private fun initTextBehaviour() {
@@ -92,6 +92,27 @@ class FilterFragment : Fragment() {
                 }
             }
         }
+    }
+
+    fun navigateToPlaceOfWork() {
+        val (country, region) = viewModel.getActualCountryAndRegion()
+        findNavController().navigate(
+            R.id.action_filterFragment_to_filtersPlaceOfWorkFragment,
+            bundleOf(
+                FiltersCountryFragment.COUNTRY_KEY to country,
+                FiltersRegionFragment.REGION_KEY to region
+            )
+        )
+    }
+
+    fun navigateToIndustry() {
+        val industryIdPrefs = viewModel.getIndustryId()
+        findNavController().navigate(
+            R.id.action_filterFragment_to_industry_filer_screen,
+            bundleOf(
+                IndustryFilterFragment.INDUSTRY_KEY_ID to industryIdPrefs
+            )
+        )
     }
 
     private fun initFilterSettings(filterSettings: FiltersSettings) {
@@ -110,13 +131,12 @@ class FilterFragment : Fragment() {
     }
 
     private fun setStateLocation(country: String?, region: String?) {
-        binding.workTextInput.apply {
-            visibility = if (country.isNullOrEmpty()) View.GONE else View.VISIBLE
-            setOnClickListener { clearWorkPlace() }
-        }
         binding.workPlaceLayout.apply {
             setEndIconDrawable(
                 if (country.isNullOrEmpty()) {
+                    setEndIconOnClickListener {
+                        navigateToPlaceOfWork()
+                    }
                     R.drawable.ic_arrow_forward_14px
                 } else {
                     setEndIconOnClickListener {
@@ -135,16 +155,11 @@ class FilterFragment : Fragment() {
     }
 
     private fun setStateIndustry(industry: String?) {
-        binding.industryTextInput.apply {
-            visibility = if (industry.isNullOrEmpty()) View.GONE else View.VISIBLE
-            binding.industryTextInput.setText(industry)
-        }
-
         binding.industryLayout.apply {
             setEndIconDrawable(
                 if (industry.isNullOrEmpty()) {
                     setOnClickListener {
-                        findNavController().navigate(R.id.action_filterFragment_to_industry_filer_screen)
+                        navigateToIndustry()
                     }
                     R.drawable.ic_arrow_forward_14px
                 } else {
@@ -165,6 +180,16 @@ class FilterFragment : Fragment() {
             val industry =
                 BundleCompat.getParcelable(bundle, IndustryFilterFragment.INDUSTRY_KEY, SubIndustry::class.java)
             viewModel.setNewIndustry(industry)
+        }
+
+        parentFragmentManager.setFragmentResultListener(
+            FiltersPlaceOfWorkFragment.REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val country =
+                BundleCompat.getParcelable(bundle, FiltersPlaceOfWorkFragment.COUNTRY_KEY, Area::class.java)
+            val region = BundleCompat.getParcelable(bundle, FiltersPlaceOfWorkFragment.REGION_KEY, Area::class.java)
+            viewModel.setNewCounterAndRegion(country, region)
         }
     }
 

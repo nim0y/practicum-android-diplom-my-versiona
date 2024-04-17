@@ -145,14 +145,14 @@
 
     <TextView
         android:id="@+id/textView2"
-        style="@style/text_16_display_medium_500"
+        style="@style/white_16_medium"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_60dp"
         android:layout_marginStart="@dimen/dimen_16dp"
         android:layout_marginEnd="@dimen/dimen_16dp"
         android:layout_marginBottom="@dimen/margin_size_24"
         android:background="@drawable/search_button_shape"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/light_blue"
         android:gravity="center"
         android:text="@string/choose"
         android:visibility="gone"

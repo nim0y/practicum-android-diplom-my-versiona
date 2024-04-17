@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.domain.interactors.FiltersInteractor
+import ru.practicum.android.diploma.domain.models.filters.Area
 import ru.practicum.android.diploma.domain.models.filters.FiltersSettings
 import ru.practicum.android.diploma.domain.models.filters.SubIndustry
 import ru.practicum.android.diploma.domain.models.filters.checkEmpty
@@ -66,6 +67,15 @@ class FilterViewModel(private val filtersInteractor: FiltersInteractor) : ViewMo
         )
     }
 
+    fun setNewCounterAndRegion(country: Area?, region: Area?) {
+        filter = filter?.copy(
+            country = country?.name ?: "",
+            countryId = country?.id ?: "",
+            region = region?.name ?: "",
+            regionId = region?.id ?: ""
+        )
+    }
+
     fun setExpectedSalary(expectedSalary: String?) {
         filter = filter?.copy(
             expectedSalary = expectedSalary ?: ""
@@ -96,5 +106,19 @@ class FilterViewModel(private val filtersInteractor: FiltersInteractor) : ViewMo
 
     fun getIndustryId(): String? {
         return filter?.industryId
+    }
+
+    fun getActualCountryAndRegion(): Pair<Area?, Area?> {
+        return if (filter?.country?.isNotEmpty() == true) {
+            val country = Area(id = filter!!.countryId, name = filter!!.country, parentId = "", areas = listOf())
+            val area = if (filter?.region?.isNotEmpty() == true) {
+                Area(id = filter!!.regionId, name = filter!!.region, parentId = "", areas = listOf())
+            } else {
+                null
+            }
+            country to area
+        } else {
+            null to null
+        }
     }
 }

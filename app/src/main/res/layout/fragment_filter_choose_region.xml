@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/search_item_shape"
+        android:background="@drawable/expected_salary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
                 style="@style/TextStyleMedium16_500"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/search_item_shape"
+                android:background="@drawable/expected_salary"
                 android:maxLines="1"
                 android:paddingVertical="16dp"
                 android:singleLine="true"
@@ -82,7 +82,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_search_loupe_18px" />
+            app:srcCompat="@drawable/ic_search" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
