@@ -50,4 +50,9 @@
             android:id="@+id/action_industry_filer_screen_to_filterFragment"
             app:destination="@id/filterFragment" />
     </fragment>
+
+    <fragment android:id="@+id/choose_place_of_work"
+        android:name="ru.practicum.android.diploma.ui.fragments.ChoosePlaceOfWorkFragment"/>
+    <fragment android:id="@+id/choose_country"
+        android:name="ru.practicum.android.diploma.ui.fragments.ChooseCountryFragment"/>
 </navigation>
