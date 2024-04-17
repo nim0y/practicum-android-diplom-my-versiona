@@ -21,11 +21,12 @@ class FiltersCountryFragment : Fragment() {
 
     private var _binding: FragmentFilterChooseCountryBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: FiltersCountryViewModel by viewModel()
     private var countriesAdapter: FilterAdapter? = null
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFilterChooseCountryBinding.inflate(inflater, container, false)
         return binding.root

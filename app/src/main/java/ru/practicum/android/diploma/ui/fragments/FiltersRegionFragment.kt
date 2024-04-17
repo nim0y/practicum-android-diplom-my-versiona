@@ -64,7 +64,10 @@ class FiltersRegionFragment : Fragment() {
         binding.regionList.adapter = regionsAdapter
         binding.regionList.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        setListener()
+    }
 
+    fun setListener() {
         binding.choosingRegion.doAfterTextChanged {
             if (it?.isNotEmpty() == true) {
                 binding.imageTextView.setImageDrawable(context?.let { it1 ->

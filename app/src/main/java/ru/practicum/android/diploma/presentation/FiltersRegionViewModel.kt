@@ -48,8 +48,6 @@ class FiltersRegionViewModel(
                 }
             }
         }
-
-
     }
 
     fun showAllArea() = viewModelScope.launch(Dispatchers.Default) {
