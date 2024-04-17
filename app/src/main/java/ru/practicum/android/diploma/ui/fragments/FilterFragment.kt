@@ -28,7 +28,6 @@ import ru.practicum.android.diploma.domain.models.filters.FiltersSettings
 import ru.practicum.android.diploma.domain.models.filters.SubIndustry
 import ru.practicum.android.diploma.presentation.FilterViewModel
 
-
 class FilterFragment : Fragment() {
     private var _binding: FragmentFilterBinding? = null
     private val binding get() = _binding!!
