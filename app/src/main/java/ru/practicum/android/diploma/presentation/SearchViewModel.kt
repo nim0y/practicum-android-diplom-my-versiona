@@ -11,11 +11,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
@@ -39,21 +39,24 @@ class SearchViewModel(
     private val searchInteractor: SearchInteractor,
     private val filterInteractor: FiltersInteractor
 ) : ViewModel() {
-    val sizeLoadPage = 1
-    var jobFilter: Job? = null
+    private val sizeLoadPage = 1
+    private var jobFilter: Job? = null
     private val _searchState = MutableLiveData<SearchScreenState>()
     val searchState: LiveData<SearchScreenState> = _searchState
-    val actionStateFlow = MutableSharedFlow<String>()
+    private val actionStateFlow = MutableStateFlow<String?>(null)
     var isClickable = true
     private var found: Int? = null
     var lastQuery: String? = null
     private var stateRefresh: LoadState? = null
     private var _errorMessage = MutableLiveData<MessageData?>()
     var errorMessage: LiveData<MessageData?> = _errorMessage
-    val stateVacancyData = actionStateFlow.flatMapLatest {
-        getPagingData(it)
+
+    val stateVacancyData = actionStateFlow.filter { it != null }.flatMapMerge {
+        setState(SearchScreenState.Loading)
+        getPagingData(it!!)
     }
-    var filtersSetting: FiltersSettings? = null
+
+    private var filtersSetting: FiltersSettings? = null
     val stateFilters = MutableStateFlow(false)
 
     init {
@@ -71,6 +74,7 @@ class SearchViewModel(
                     filtersSetting = newFilters
                     stateFilters.value = filtersSetting?.checkEmpty() ?: false
                     if (lastQuery?.isNotEmpty() == true) {
+                        actionStateFlow.emit(null)
                         actionStateFlow.emit(lastQuery!!)
                     }
                 }
@@ -85,13 +89,17 @@ class SearchViewModel(
                 if (query?.isNotEmpty() == true && (query != lastQuery || state is SearchScreenState.Error)) {
                     found = null
                     lastQuery = query
-                    setState(SearchScreenState.Loading)
                     actionStateFlow.emit(query)
                 } else if (query?.trim() == lastQuery?.trim() && query?.isNotEmpty() == true) {
                     if (state != null) {
                         setState(SearchScreenState.Default)
                         _searchState.postValue(state)
                     }
+                }
+                if (query.isNullOrEmpty()) {
+                    lastQuery = null
+                    actionStateFlow.emit(null)
+                    setState(SearchScreenState.Default)
                 }
             }
         }
@@ -117,15 +125,18 @@ class SearchViewModel(
     fun listener(loadState: CombinedLoadStates) {
         viewModelScope.launch(Dispatchers.Main) {
             when (val refresh = loadState.source.refresh) {
-                is LoadState.Error -> when (refresh.error) {
-                    is ConnectException -> _searchState.value =
-                        SearchScreenState.Error(ErrorVariant.NO_CONNECTION)
+                is LoadState.Error -> {
+                    actionStateFlow.emit(null)
+                    when (refresh.error) {
+                        is ConnectException -> _searchState.value =
+                            SearchScreenState.Error(ErrorVariant.NO_CONNECTION)
 
-                    is NullPointerException -> _searchState.value =
-                        SearchScreenState.Error(ErrorVariant.NO_CONTENT)
+                        is NullPointerException -> _searchState.value =
+                            SearchScreenState.Error(ErrorVariant.NO_CONTENT)
 
-                    is ServerError -> _searchState.value =
-                        SearchScreenState.Error(ErrorVariant.BAD_REQUEST)
+                        is ServerError -> _searchState.value =
+                            SearchScreenState.Error(ErrorVariant.BAD_REQUEST)
+                    }
                 }
 
                 LoadState.Loading -> {

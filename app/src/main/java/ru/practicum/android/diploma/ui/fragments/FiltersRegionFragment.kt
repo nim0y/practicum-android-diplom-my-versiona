@@ -73,15 +73,15 @@ class FiltersRegionFragment : Fragment() {
                 binding.imageTextView.setImageDrawable(context?.let { it1 ->
                     AppCompatResources.getDrawable(
                         it1,
-                        R.drawable.ic_close_cross_14px
+                        R.drawable.ic_clear_button
                     )
                 })
-                viewModel.findArea(it?.toString() ?: "")
+                viewModel.findArea(it.toString() ?: "")
             } else {
                 binding.imageTextView.setImageDrawable(context?.let { it1 ->
                     AppCompatResources.getDrawable(
                         it1,
-                        R.drawable.ic_search_loupe_18px
+                        R.drawable.ic_search
                     )
                 })
                 viewModel.showAllArea()
