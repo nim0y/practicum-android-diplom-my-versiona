@@ -31,10 +31,11 @@ class IndustryAdapter(private val onClick: (IndustryAdapterItem) -> Unit) : Recy
     }
 
     private fun updateSelectedIndustry(position: Int) {
+        val oldData = ArrayList(data)
         val updatedData = data.mapIndexed { index, item ->
             IndustryAdapterItem(item.industry, index == position)
         }
-        val diffCallback = IndustryDiffCallback(data, updatedData)
+        val diffCallback = IndustryDiffCallback(oldData, updatedData)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         data = updatedData
         checkedRadioButtonId = position
@@ -47,6 +48,7 @@ class IndustryAdapter(private val onClick: (IndustryAdapterItem) -> Unit) : Recy
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         data = newList
         diffResult.dispatchUpdatesTo(this)
+        notifyItemRangeChanged(0, data.size)
     }
 
     fun setSelectedIndustry(industryId: String?) {
