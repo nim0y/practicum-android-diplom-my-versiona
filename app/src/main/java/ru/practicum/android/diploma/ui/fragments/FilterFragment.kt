@@ -170,6 +170,7 @@ class FilterFragment : Fragment() {
                 }
             )
         }
+        binding.industryTextInput.setText(industry)
     }
 
     private fun setFragmentResultListenerControl() {
