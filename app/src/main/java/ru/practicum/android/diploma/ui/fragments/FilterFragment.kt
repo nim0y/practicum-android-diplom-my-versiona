@@ -147,7 +147,7 @@ class FilterFragment : Fragment() {
             )
         }
         val place = country + if (!region.isNullOrEmpty()) {
-            getString(R.string.separator) + region
+            getString(R.string.separator) + " $region"
         } else {
             ""
         }
