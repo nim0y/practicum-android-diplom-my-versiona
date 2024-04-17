@@ -63,7 +63,8 @@
             android:layout_marginEnd="@dimen/dimen_20dp"
             android:scaleType="center"
             android:src="@drawable/ic_close_cross_14px"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible" />
     </FrameLayout>
 
     <ProgressBar
@@ -82,14 +83,14 @@
         android:id="@+id/industry_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_8"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_marginTop="@dimen/margin_size_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_edit_frame"
         tools:listitem="@layout/industry_item"
-        tools:visibility="gone" />
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/no_list_placeholder"
@@ -118,7 +119,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="no_list_placeholder,placeholder_text" />
+        app:constraint_referenced_ids="no_list_placeholder,placeholder_text"
+        tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/apply_button"
@@ -135,5 +137,6 @@
         app:cornerRadius="@dimen/dimen_12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>
