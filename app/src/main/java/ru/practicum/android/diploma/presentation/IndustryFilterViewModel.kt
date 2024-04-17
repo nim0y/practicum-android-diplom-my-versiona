@@ -37,7 +37,7 @@ class IndustryFilterViewModel(private val filtersInteractor: FiltersInteractor) 
             }
 
             is Response.Error -> {
-                _industryState.value = IndustryFilterState.Error
+                _industryState.postValue(IndustryFilterState.Error)
             }
         }
     }

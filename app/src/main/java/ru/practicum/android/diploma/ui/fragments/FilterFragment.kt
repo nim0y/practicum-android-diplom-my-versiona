@@ -1,9 +1,14 @@
 package ru.practicum.android.diploma.ui.fragments
 
+import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -18,6 +23,7 @@ import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.domain.models.filters.Area
 import ru.practicum.android.diploma.domain.models.filters.FiltersSettings
 import ru.practicum.android.diploma.domain.models.filters.SubIndustry
 import ru.practicum.android.diploma.presentation.FilterViewModel
@@ -66,18 +72,17 @@ class FilterFragment : Fragment() {
             viewModel.setSalaryOnlyCheckbox(isChecked)
         }
         binding.industryTextInput.setOnClickListener {
-            val industryIdPrefs = viewModel.getIndustryId()
-            findNavController().navigate(
-                R.id.action_filterFragment_to_industry_filer_screen,
-                bundleOf(
-                    IndustryFilterFragment.INDUSTRY_KEY_ID to industryIdPrefs
-                )
-            )
+            navigateToIndustry()
+        }
+        binding.industryLayout.setOnClickListener {
+            navigateToIndustry()
         }
         binding.workPlaceLayout.setOnClickListener {
-            findNavController().navigate(R.id.choose_place_of_work)
+            navigateToPlaceOfWork()
         }
-
+        binding.workTextInput.setOnClickListener {
+            navigateToPlaceOfWork()
+        }
     }
 
     private fun initTextBehaviour() {
@@ -85,13 +90,57 @@ class FilterFragment : Fragment() {
             viewModel.setExpectedSalary(text?.toString())
             if (text.isNullOrEmpty()) {
                 binding.salaryLayout.endIconMode = TextInputLayout.END_ICON_NONE
+                binding.salaryLayout.defaultHintTextColor = ColorStateList.valueOf(Color.RED)
+                if (binding.salary.isFocused) {
+                    binding.salaryLayout.defaultHintTextColor =
+                        ColorStateList.valueOf(requireContext().getColor(R.color.light_blue))
+                } else {
+                    binding.salaryLayout.defaultHintTextColor =
+                        ColorStateList.valueOf(requireContext().getColorOnSecondaryFixed())
+                }
             } else {
+                if (binding.salary.isFocused) {
+                    binding.salaryLayout.defaultHintTextColor =
+                        ColorStateList.valueOf(requireContext().getColor(R.color.light_blue))
+                } else {
+                    binding.salaryLayout.defaultHintTextColor =
+                        ColorStateList.valueOf(requireContext().getColor(R.color.black))
+                }
                 binding.salaryLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
                 binding.salaryLayout.setEndIconOnClickListener {
                     binding.salary.setText("")
                 }
             }
         }
+    }
+
+    @ColorInt
+    fun Context.getColorOnSecondaryFixed(): Int {
+        val typedValue = TypedValue()
+        val theme = theme
+        theme.resolveAttribute(com.google.android.material.R.attr.colorOnSecondaryFixed, typedValue, true)
+        return typedValue.data
+    }
+
+    fun navigateToPlaceOfWork() {
+        val (country, region) = viewModel.getActualCountryAndRegion()
+        findNavController().navigate(
+            R.id.action_filterFragment_to_filtersPlaceOfWorkFragment,
+            bundleOf(
+                FiltersCountryFragment.COUNTRY_KEY to country,
+                FiltersRegionFragment.REGION_KEY to region
+            )
+        )
+    }
+
+    fun navigateToIndustry() {
+        val industryIdPrefs = viewModel.getIndustryId()
+        findNavController().navigate(
+            R.id.action_filterFragment_to_industry_filer_screen,
+            bundleOf(
+                IndustryFilterFragment.INDUSTRY_KEY_ID to industryIdPrefs
+            )
+        )
     }
 
     private fun initFilterSettings(filterSettings: FiltersSettings) {
@@ -110,13 +159,12 @@ class FilterFragment : Fragment() {
     }
 
     private fun setStateLocation(country: String?, region: String?) {
-        binding.workTextInput.apply {
-            visibility = if (country.isNullOrEmpty()) View.GONE else View.VISIBLE
-            setOnClickListener { clearWorkPlace() }
-        }
         binding.workPlaceLayout.apply {
             setEndIconDrawable(
                 if (country.isNullOrEmpty()) {
+                    setEndIconOnClickListener {
+                        navigateToPlaceOfWork()
+                    }
                     R.drawable.ic_arrow_forward_14px
                 } else {
                     setEndIconOnClickListener {
@@ -127,7 +175,7 @@ class FilterFragment : Fragment() {
             )
         }
         val place = country + if (!region.isNullOrEmpty()) {
-            getString(R.string.separator) + region
+            getString(R.string.separator) + " $region"
         } else {
             ""
         }
@@ -135,16 +183,11 @@ class FilterFragment : Fragment() {
     }
 
     private fun setStateIndustry(industry: String?) {
-        binding.industryTextInput.apply {
-            visibility = if (industry.isNullOrEmpty()) View.GONE else View.VISIBLE
-            binding.industryTextInput.setText(industry)
-        }
-
         binding.industryLayout.apply {
             setEndIconDrawable(
                 if (industry.isNullOrEmpty()) {
                     setOnClickListener {
-                        findNavController().navigate(R.id.action_filterFragment_to_industry_filer_screen)
+                        navigateToIndustry()
                     }
                     R.drawable.ic_arrow_forward_14px
                 } else {
@@ -155,6 +198,7 @@ class FilterFragment : Fragment() {
                 }
             )
         }
+        binding.industryTextInput.setText(industry)
     }
 
     private fun setFragmentResultListenerControl() {
@@ -165,6 +209,16 @@ class FilterFragment : Fragment() {
             val industry =
                 BundleCompat.getParcelable(bundle, IndustryFilterFragment.INDUSTRY_KEY, SubIndustry::class.java)
             viewModel.setNewIndustry(industry)
+        }
+
+        parentFragmentManager.setFragmentResultListener(
+            FiltersPlaceOfWorkFragment.REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val country =
+                BundleCompat.getParcelable(bundle, FiltersPlaceOfWorkFragment.COUNTRY_KEY, Area::class.java)
+            val region = BundleCompat.getParcelable(bundle, FiltersPlaceOfWorkFragment.REGION_KEY, Area::class.java)
+            viewModel.setNewCounterAndRegion(country, region)
         }
     }
 

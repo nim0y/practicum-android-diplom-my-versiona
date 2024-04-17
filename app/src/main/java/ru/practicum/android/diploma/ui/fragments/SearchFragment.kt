@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,6 +34,7 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
     private var adapter: PageVacancyAdapter? = null
+    var jobSearch: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +56,7 @@ class SearchFragment : Fragment() {
         vacancyList.adapter = adapter?.withLoadStateFooter(footer = SearchLoadStateAdapter())
         vacancyList.layoutManager = LinearLayoutManager(context)
 
-        lifecycleScope.launch {
+        jobSearch = lifecycleScope.launch {
             viewModel.stateVacancyData.collectLatest {
                 createNewAdapter()
                 adapter?.submitData(it)
@@ -182,6 +184,7 @@ class SearchFragment : Fragment() {
         binding.searchRecycleView.isVisible = true
         binding.badRequest.isVisible = false
         binding.badRequestText.isVisible = false
+        binding.noVacancyToShowText.isVisible = false
     }
 
     private fun showNoConnectionError(errorVariant: ErrorVariant) {
@@ -227,6 +230,7 @@ class SearchFragment : Fragment() {
             noConnectionPlaceholder.isVisible = false
             binding.badRequest.isVisible = false
             binding.badRequestText.isVisible = false
+            noVacancyToShowText.isVisible = false
         }
     }
 
@@ -257,6 +261,7 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        jobSearch?.cancel()
     }
 
     override fun onResume() {

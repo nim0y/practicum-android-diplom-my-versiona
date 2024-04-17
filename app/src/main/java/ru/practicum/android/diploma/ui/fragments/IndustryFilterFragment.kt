@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +60,7 @@ class IndustryFilterFragment : Fragment() {
         }
 
         viewModel.industryState.observe(viewLifecycleOwner) { state ->
+            Log.e("TESTOTR", state::class.java.name)
             when (state) {
                 IndustryFilterState.Empty -> showEmpty()
                 IndustryFilterState.Error -> showError()
@@ -123,7 +125,7 @@ class IndustryFilterFragment : Fragment() {
     }
 
     private fun showError() {
-        showErrorOrEmptyState(R.drawable.no_such_list_found, R.string.favorite_list_empty)
+        showErrorOrEmptyState(R.drawable.no_such_list_found, R.string.failed_to_get_list)
     }
 
     private fun showErrorOrEmptyState(image: Int, text: Int) {
